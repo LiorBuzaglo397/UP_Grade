@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import Navbar from './Navbar';
+import StudentDashboard from './StudentDashboard';
+import TeacherDashboard from './TeacherDashboard';
 
 /*****  bootstrap ******/
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,14 +19,6 @@ import ThemeProvider from 'react-bootstrap/ThemeProvider'
   integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
   crossorigin="anonymous"
 />
-
-/*
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
-*/ 
 
 /****************   Login   **********************/ 
 const App = () => {
@@ -100,7 +94,7 @@ const App = () => {
     <div>
       {loggedIn ? (
         <div> 
-          <Navbar/>         
+           <Navbar handleLogout={handleLogout} />         
           <div className='dashboard-div'>
               <br></br>
               <img className='dashboard-img' src='https://imgtr.ee/images/2023/06/01/S83jq.png'></img>
@@ -120,161 +114,6 @@ const App = () => {
         </div>
       ) : (
         renderLoginForm()
-      )}
-    </div>
-  );
-};
-
-
-// **************   Student Dashboard   ******************
-const StudentDashboard = () => {
-  const [courses, setCourses] = useState([
-    { id: 1, name: 'Mathematics' },
-    { id: 2, name: 'Physics' },
-    { id: 3, name: 'Chemistry' },
-  ]);
-
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [grades, setGrades] = useState({});
-
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
-    // Fetch grades for the selected course
-    // Assuming grades are retrieved from an API
-    const courseGrades = {
-      // Sample grades data
-      1: { grade: 'A' },
-      2: { grade: 'B+' },
-      3: { grade: 'A-' },
-    };
-    setGrades(courseGrades[course.id]);
-  };
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    // Upload the file to the server
-    // Assuming file upload functionality is handled by an API
-    console.log('File uploaded:', file);
-  };
-
-  return (
-    <div>
-      <h2>Student Dashboard</h2>
-      <h3>Your Courses:</h3>
-      <ul>
-        {courses.map((course) => (
-          <button key={course.id} onClick={() => handleCourseSelect(course)}>
-            {course.name}
-          </button>
-        ))}
-      </ul>
-
-      {selectedCourse && (
-        <div>
-          <h4>Selected Course: {selectedCourse.name}</h4>
-          <h4>Grades</h4>
-          <p>Grade: {grades.grade}</p>
-          <input type="file" onChange={handleFileUpload} />
-        </div>
-      )}
-    </div>
-  );
-};
-
-// **************   Teacher Dashboard   ******************
-
-const TeacherDashboard = () => {
-  const [courses, setCourses] = useState([
-    { id: 1, name: 'Mathematics' },
-    { id: 2, name: 'Physics' },
-    { id: 3, name: 'Chemistry' },
-  ]);
-
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [students, setStudents] = useState([]);
-  const [courseInfo, setCourseInfo] = useState('');
-
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
-    // Fetch students and course information for the selected course
-    // Assuming data is retrieved from an API
-    const courseStudents = {
-      // Sample students data
-      1: [
-        { id: 1, name: 'Student 1' },
-        { id: 2, name: 'Student 2' },
-        { id: 3, name: 'Student 3' },
-      ],
-      2: [
-        { id: 4, name: 'Student 4' },
-        { id: 5, name: 'Student 5' },
-      ],
-      3: [
-        { id: 6, name: 'Student 6' },
-        { id: 7, name: 'Student 7' },
-      ],
-    };
-    setStudents(courseStudents[course.id]);
-
-    const courseData = {
-      // Sample course information data
-      1: { info: 'Mathematics course information' },
-      2: { info: 'Physics course information' },
-      3: { info: 'Chemistry course information' },
-    };
-    setCourseInfo(courseData[course.id].info);
-  };
-
-  const handleGradeUpdate = (studentId, newGrade) => {
-    // Update grades for the selected student in the selected course
-    // Assuming grade update functionality is handled by an API
-    console.log(`Updated grade for student ${studentId}: ${newGrade}`);
-  };
-
-  const handleCourseEdit = () => {
-    // Edit the course information for the selected course
-    // Assuming course editing functionality is handled by an API
-    console.log('Course edited');
-  };
-
-  return (
-    <div>
-      <h2>Teacher Dashboard</h2>
-      <h3>Courses</h3>
-      <ul>
-        {courses.map((course) => (
-          <button key={course.id} onClick={() => handleCourseSelect(course)}>
-            {course.name}
-          </button>
-        ))}
-      </ul>
-
-      {selectedCourse && (
-        <div>
-          <h4>Selected Course: {selectedCourse.name}</h4>
-          <h4>Students</h4>
-          <ul>
-            {students.map((student) => (
-              <li key={student.id}>{student.name}</li>
-            ))}
-          </ul>
-          <h4>Course Information</h4>
-          <p>{courseInfo}</p>
-          <button onClick={handleCourseEdit}>Edit Course</button>
-
-          <h4>Update Grades</h4>
-          {students.map((student) => (
-            <div key={student.id}>
-              <label>
-                Student: {student.name}
-                <input
-                  type="text"
-                  onChange={(e) => handleGradeUpdate(student.id, e.target.value)}
-                />
-              </label>
-            </div>
-          ))}
-        </div>
       )}
     </div>
   );
