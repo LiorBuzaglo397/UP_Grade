@@ -64,7 +64,7 @@ const App = () => {
 
   const renderLoginForm = () => {
     return (
-      <div>
+      <div className='login-div'>
         <img src='https://imgtr.ee/images/2023/06/01/S83jq.png'></img>
         <div className="login-container">
           <h1>Login to the system</h1>
@@ -89,31 +89,34 @@ const App = () => {
   const renderUserForm = () => {
     if (userType === 'student') {
       return <StudentDashboard />;
-    } else if (userType === 'lecturer') {
-      return <LecturerDashboard />;
+    } else if (userType === 'teacher') {
+      return <TeacherDashboard />;
     }
 
     return null;
   };
 
   return (
-    <div className='dashboard-div'>
-      {loggedIn ? (          
-        <div>
-          <Navbar/>
-            <img className='dashboard-img' src='https://imgtr.ee/images/2023/06/01/S83jq.png'></img>
-            <h1>Welcome to UP-GRADE Website</h1><br></br>
-            <button onClick={handleLogout}> Logout </button><br></br>
-            <label>
-              User Type: 
-              <select value={userType} onChange={handleUserTypeChange}>
-                <option value="">Select User Type</option>
-                <option value="student">Student</option>
-                <option value="lecturer">Lecturer</option>
-              </select>
-            </label>
+    <div>
+      {loggedIn ? (
+        <div> 
+          <Navbar/>         
+          <div className='dashboard-div'>
+              <br></br>
+              <img className='dashboard-img' src='https://imgtr.ee/images/2023/06/01/S83jq.png'></img>
+              <h1>Welcome to UP-GRADE Website</h1><br></br>
+              <button onClick={handleLogout}> Logout </button><br></br>
+              <label>
+                User Type: 
+                <select value={userType} onChange={handleUserTypeChange}>
+                  <option value="">Select User Type</option>
+                  <option value="student">Student</option>
+                  <option value="teacher">Teacher</option>
+                </select>
+              </label>
 
-            {renderUserForm()}
+              {renderUserForm()}
+          </div>
         </div>
       ) : (
         renderLoginForm()
@@ -178,9 +181,9 @@ const StudentDashboard = () => {
   );
 };
 
-// **************   Lecturer Dashboard   ******************
+// **************   Teacher Dashboard   ******************
 
-const LecturerDashboard = () => {
+const TeacherDashboard = () => {
   const [courses, setCourses] = useState([
     { id: 1, name: 'Mathematics' },
     { id: 2, name: 'Physics' },
@@ -236,7 +239,7 @@ const LecturerDashboard = () => {
 
   return (
     <div>
-      <h2>Lecturer Dashboard</h2>
+      <h2>Teacher Dashboard</h2>
       <h3>Courses</h3>
       <ul>
         {courses.map((course) => (
