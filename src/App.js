@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './index.css';
 import Navbar from './Navbar';
 import StudentDashboard from './StudentDashboard';
 import TeacherDashboard from './TeacherDashboard';
@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Alert from 'react-bootstrap/Alert';
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
+import { Router } from 'react-router-dom/cjs/react-router-dom.min';
 
 <link
   rel="stylesheet"
