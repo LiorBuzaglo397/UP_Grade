@@ -287,6 +287,12 @@ nav a:hover{
   background: #F8F8F8;
 }
 
+.grade-table input,select {
+  color: white;
+  background: #c064e5;
+  text-align: center;
+}
+
 /* Responsive */
 
 @media (max-width: 767px) {

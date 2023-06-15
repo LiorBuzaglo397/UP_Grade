@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import GradesPage from './GradesPage';
+import StudentGrades from './StudentGrades';
 import GradeDistributionPage from './GradeDistributionPage';
 
 const StudentDashboard = () => {
@@ -22,9 +22,9 @@ const StudentDashboard = () => {
     console.log('File uploaded:', file);
   };
 
-  const renderGradesPage = () => {
+  const renderStudentGrades = () => {
     return selectedCourse ? (
-      <GradesPage course={selectedCourse} />
+      <StudentGrades course={selectedCourse} />
     ) : (
       <p>Please select a course to view grades.</p>
     );
@@ -54,7 +54,7 @@ const StudentDashboard = () => {
         <div>
           <h4>Selected Course: {selectedCourse.name}</h4>
           <h4>Grades</h4>
-          {renderGradesPage()}
+          {renderStudentGrades()}
           <input type="file" onChange={handleFileUpload} />
 
           <h4>Grade Distribution</h4>
