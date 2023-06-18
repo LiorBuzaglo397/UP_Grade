@@ -2,14 +2,17 @@
 import express from 'express'; 
 import mongoose from "mongoose";
 import router from './routes/user-routes';
+import courseRouter from './routes/course-routes';
 
 
 
 const app = express();
-
+app.use(express.json());
 app.use("/api/user",router);
+app.use("/api/course" ,courseRouter )
+
 mongoose
-    .connect("mongodb+srv://LiorBuzaglo:<password>@cluster1.ybcsdrv.mongodb.net/UP_Grage?retryWrites=true&w=majority")
+    .connect("mongodb+srv://LiorBuzaglo:Ll18061996@cluster1.ybcsdrv.mongodb.net/UP_Grade?retryWrites=true&w=majority")
     .then(() => app.listen(5000)
     )
     .then(() =>
