@@ -133,6 +133,16 @@ button {
   cursor: pointer;
 }
 
+.back-button {
+  padding: 15px;
+  background-color: #b675bc;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-left: 0 auto;
+}
+
 img {
   display: block;
   margin: 0 auto;
@@ -149,14 +159,12 @@ img {
   width: 15%;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: white;
-  font-weight: bolder;
+
+h1,h2,h3,h4,h5,h6
+ { 
+  color: #b675bc;
+  font-weight: 900;
+  font-style: italic;
   text-align: center;
   margin: 50px;
 }
@@ -242,9 +250,15 @@ nav a:hover{
 /* Table Styles */
 
 .table-wrapper{
-  margin: 10px 70px 70px;
-  box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
-  
+  background-color: rgba(56, 31, 99, .8);
+  width: 80%;
+  margin: 80px auto;
+  text-align: center; 
+}
+.table-wrapper h2{
+  color: #b675bc;
+  font-weight: 900;
+  font-style: italic;
 }
 
 .grade-table {
@@ -254,11 +268,11 @@ nav a:hover{
   border: none;
   border-collapse: collapse;
   width: 80%;
-  max-width: 500px;
+  max-width: 600px;
   white-space: nowrap;
   background-color: #e9c4f8;
   margin-top: 5%;
-  margin-left: 27%;
+  margin-left: 25%;
 }
 
 .grade-table td, .grade-table th {
@@ -298,7 +312,7 @@ nav a:hover{
 @media (max-width: 767px) {
   .grade-table {
       display: block;
-      width: 100%;
+      width: 80%;
       margin-left: 10%;
   }
   .table-wrapper:before{
@@ -329,8 +343,8 @@ nav a:hover{
       box-sizing: border-box;
       overflow-x: hidden;
       overflow-y: auto;
-      width: 120px;
-      font-size: 0.7em;
+      width: 150px;
+      font-size: 12px;
       text-overflow: ellipsis;
   }
   .grade-table thead th {

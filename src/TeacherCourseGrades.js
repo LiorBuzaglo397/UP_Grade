@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Navbar from './Navbar';
+import { useHistory } from 'react-router-dom';
 
-const TeacherCourseGrades = ({ course }) => {
+const TeacherCourseGrades = () => {
+
+const { course } = useParams();
+  const history = useHistory();
+
   const [grades, setGrades] = useState([
     { id: 1, name: 'Student 1', date: '2023-06-01', type: 'test', grade: 80 },
     { id: 2, name: 'Student 2', date: '2023-06-03', type: 'exercise', grade: 90 },
@@ -14,7 +21,7 @@ const TeacherCourseGrades = ({ course }) => {
     { id: 4, course: 'Mathematics', name: 'Lab2 Math', date: '2023-08-05', type: 'Lab' },
   ]);
 
-  const filteredAssignments = assignments.filter((assignment) => assignment.course === course.name);
+  const filteredAssignments = assignments.filter((assignment) => assignment.course === course);
 
 
   const handleGradeUpdate = (studentId, field, value) => {
@@ -115,62 +122,66 @@ const TeacherCourseGrades = ({ course }) => {
 
   }
 
- 
-
   return (
-    <div className='table-wrapper'>
-      <h2>Teacher Course Assignments</h2>
-      <table className='grade-table'>
-        <thead>
-          <tr>
-            <th>Course</th>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Type</th>
-            <th>grades</th>
-          </tr>
-        </thead>
-        <tbody>
-          {assignments.map((assignment) => (
-            <tr key={assignment.id}>
-              <td>
-                {assignment.course}
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={assignment.name}
-                  onChange={(e) => handleAssignmentUpdate(assignment.id, 'name', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="date"
-                  value={assignment.date}
-                  onChange={(e) => handleAssignmentUpdate(assignment.id, 'date', e.target.value)}
-                />
-              </td>
-              <td>
-                <select
-                  value={assignment.type}
-                  onChange={(e) => handleAssignmentUpdate(assignment.id, 'type', e.target.value)}
-                >
-                  <option value="test">Test</option>
-                  <option value="exercise">Exercise</option>
-                  <option value="lab">Lab</option>
-                </select>
-              </td>
-              <td>
-                <button on onClick={() => uploadStudentsGrades(assignment.course)}>Upload grades</button>
-              </td>
+    <div>
+        <Navbar /> 
+        <div className='table-wrapper'>
+        <h2>Teacher { course } Course Assignments</h2>
+        <table className='grade-table'>
+            <thead>
+            <tr>
+                <th>Course</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>grades</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <button onClick={handleAddAssignment}>New Assignment</button>
-      <button onClick={handleSave}>Save</button>
-      
+            </thead>
+            <tbody>
+            {assignments.map((assignment) => (
+                <tr key={assignment.id}>
+                <td>
+                    {assignment.course}
+                </td>
+                <td>
+                    <input
+                    type="text"
+                    value={assignment.name}
+                    onChange={(e) => handleAssignmentUpdate(assignment.id, 'name', e.target.value)}
+                    />
+                </td>
+                <td>
+                    <input
+                    type="date"
+                    value={assignment.date}
+                    onChange={(e) => handleAssignmentUpdate(assignment.id, 'date', e.target.value)}
+                    />
+                </td>
+                <td>
+                    <select
+                    value={assignment.type}
+                    onChange={(e) => handleAssignmentUpdate(assignment.id, 'type', e.target.value)}
+                    >
+                    <option value="test">Test</option>
+                    <option value="exercise">Exercise</option>
+                    <option value="lab">Lab</option>
+                    </select>
+                </td>
+                <td>
+                    <button on onClick={() => uploadStudentsGrades(assignment.course)}>Upload grades</button>
+                </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+        <button onClick={handleAddAssignment}>New Assignment</button>
+        <button onClick={handleSave}>Save</button>
+
+        <button onClick={() => history.goBack()} className='back-button'>Go Back</button>
+        
+        </div>
     </div>
+    
   );
 };
 

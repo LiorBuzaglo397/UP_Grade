@@ -3,6 +3,10 @@ import './index.css';
 import Navbar from './Navbar';
 import StudentDashboard from './StudentDashboard';
 import TeacherDashboard from './TeacherDashboard';
+import Login from './Login';
+import StudentGrades from './StudentGrades';
+import TeacherCourseGrades from './TeacherCourseGrades';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 /*****  bootstrap ******/
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,8 +16,6 @@ import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Alert from 'react-bootstrap/Alert';
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
-import { Router } from 'react-router-dom/cjs/react-router-dom.min';
-
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -21,22 +23,12 @@ import { Router } from 'react-router-dom/cjs/react-router-dom.min';
   crossorigin="anonymous"
 />
 
-/****************   Login   **********************/ 
+
 const App = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [userType, setUserType] = useState('');
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleLogin = () => {
+  const handleLogin = (username, password) => {
     // Perform login validation
     // Here, we simply check if the username and password are not empty
     if (username !== '' && password !== '') {
@@ -48,37 +40,11 @@ const App = () => {
 
   const handleLogout = () => {
     setLoggedIn(false);
-    setUsername('');
-    setPassword('');
     setUserType('');
   };
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
-  };
-
-  const renderLoginForm = () => {
-    return (
-      <div className='login-div'>
-        <img src='https://imgtr.ee/images/2023/06/01/S83jq.png'></img>
-        <div className="login-container">
-          <h1>Login to the system</h1>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <button onClick={handleLogin}>Login</button>
-        </div>
-      </div>
-    );
   };
 
   const renderUserForm = () => {
@@ -92,31 +58,48 @@ const App = () => {
   };
 
   return (
-    <div>
-      {loggedIn ? (
-        <div> 
-           <Navbar handleLogout={handleLogout} />         
-          <div className='dashboard-div'>
-              <br></br>
-              <img className='dashboard-img' src='https://imgtr.ee/images/2023/06/01/S83jq.png'></img>
-              <h1>Welcome to UP-GRADE Website</h1><br></br>
-              <button onClick={handleLogout}> Logout </button><br></br>
-              <label>
-                User Type: 
-                <select value={userType} onChange={handleUserTypeChange}>
-                  <option value="">Select User Type</option>
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                </select>
-              </label>
-
-              {renderUserForm()}
-          </div>
-        </div>
-      ) : (
-        renderLoginForm()
-      )}
-    </div>
+    <Router>
+      <div>
+        <Switch>
+          <Route exact path="/">
+            {loggedIn ? (
+              <div>
+                <Navbar handleLogout={handleLogout} />
+                <div className='dashboard-div'>
+                  <br></br>
+                  <img className='dashboard-img' src='https://imgtr.ee/images/2023/06/01/S83jq.png' alt="logo" />
+                  <h1>Welcome to UP-GRADE Website</h1><br></br>
+                  <button onClick={handleLogout}>Logout</button><br></br>
+                  <label>
+                    User Type:
+                    <select value={userType} onChange={handleUserTypeChange}>
+                      <option value="">Select User Type</option>
+                      <option value="student">Student</option>
+                      <option value="teacher">Teacher</option>
+                    </select>
+                  </label>
+                  {renderUserForm()}
+                </div>
+                </div>
+            ) : (
+              <Login handleLogin={handleLogin} />
+            )}
+          </Route>
+          <Route path="/student-grades/:course">
+            <StudentGrades />
+          </Route>
+          <Route path="/teacher-grades/:course">
+            <TeacherCourseGrades />
+          </Route>
+          <Route path="/student-dashboard">
+            <StudentDashboard />
+          </Route>
+          <Route path="/teacher-dashboard">
+            <TeacherDashboard />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
