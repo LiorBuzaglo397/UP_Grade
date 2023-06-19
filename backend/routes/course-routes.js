@@ -1,9 +1,12 @@
 import express from 'express'; 
 
-import {getAllCourses , addCourse} from '../controllers/course-controller';
+import {getAllCourses , addCourse ,addStudentToCourse ,addTeacherToCourse} from '../controllers/course-controller';
 const courseRouter = express.Router();
 
 courseRouter.get("/" , getAllCourses);
-courseRouter.post("/add" , addCourse);
+courseRouter.post("/addCourse" , addCourse)
+courseRouter.post("/addStudentToCourse" , addStudentToCourse);
+courseRouter.post("/addTeacherToCourse" , addTeacherToCourse);
+
 
 export default courseRouter;

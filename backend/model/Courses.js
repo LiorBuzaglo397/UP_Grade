@@ -4,14 +4,19 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const courseSchema = new Schema ({
-    course_ID :{
+    _id: {
         type: Schema.Types.ObjectId,
         auto: true,
+      },
+    
+
+    course_ID :{
+        type : String,
+        require : true
     } , 
 
     course_Name : {
         type : String ,
-        unique : true ,
         require : true 
     }, 
 
@@ -21,15 +26,11 @@ const courseSchema = new Schema ({
         require :true
     },
 
-    semesrer_Num :{
+    semester_Num :{
         type : String , 
         require :true
     },
 
-    course_Description :{
-        type : String ,
-        require : true 
-    },
 
     student_List :{
         type : [String],
@@ -40,11 +41,6 @@ const courseSchema = new Schema ({
     teacher_list :{
         type : [String],
         default : []
-    },
-
-    syllabus : {
-        type : Buffer ,
-        require : true 
     }
 });
 

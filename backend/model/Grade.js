@@ -8,9 +8,9 @@ const gradeSchema = new Schema({
       type: Schema.Types.ObjectId,
       auto: true,
     },
-    studentId: {
+    user_Id: {
       type: Schema.Types.ObjectId,
-      ref: 'Student',
+      ref: 'User',
       required: true,
     },
     courseId: {
@@ -22,8 +22,9 @@ const gradeSchema = new Schema({
       type: String,
       required: true,
     },
-    type: {
+    gradeType: {
       type: String,
+      enum: ['test', 'lab', 'hw'],
       required: true,
     },
     grade: {

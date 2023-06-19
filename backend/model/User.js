@@ -4,15 +4,11 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     user_ID : {
-        type: Schema.Types.ObjectId,
-        auto: true,
+        type : String,
+        unique : true ,
+        require : true
     },
 
-    user_Password : {
-        type : String ,
-        required : true,
-        minlength : 8
-    },
     first_Name : {
         type : String ,
         required : true
@@ -41,6 +37,11 @@ const userSchema = new Schema({
     courses :{
         type : [String] , 
         default : []
+    } ,
+    user_Password : {
+        type : String ,
+        required : true,
+        minlength : 8
     }
     
 
