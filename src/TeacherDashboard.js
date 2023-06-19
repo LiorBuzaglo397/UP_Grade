@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { useHistory } from 'react-router-dom';
 import TeacherCourseGrades from './TeacherCourseGrades';
+import { Link } from 'react-router-dom';
 
 const TeacherDashboard = () => {
   const history = useHistory();
@@ -27,7 +28,6 @@ const TeacherDashboard = () => {
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
-    //**************history.push(`/grades/${course.id}`);
     
     
     // Fetch students and course information for the selected course
@@ -107,6 +107,29 @@ const TeacherDashboard = () => {
   return (
     <div>
       <h2>Teacher Dashboard</h2>
+      <h3>Your Courses:</h3>
+      <ul>
+        {courses.map((course) => (
+          <Link to={`/teacher-grades/${course.name}`} key={course.id}>
+            <button>
+              {course.name}
+            </button>
+          </Link>
+        ))}
+      </ul>
+
+
+    </div>
+  );
+};
+
+export default TeacherDashboard;
+
+
+/**
+return (
+    <div>
+      <h2>Teacher Dashboard</h2>
       <h3>Courses</h3>
       <ul>
         {courses.map((course) => (
@@ -151,10 +174,9 @@ const TeacherDashboard = () => {
         </div>
       )}
     </div>
-  );
-};
+  ); 
 
-export default TeacherDashboard;
+ */
 
 
 /*
