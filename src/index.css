@@ -10,7 +10,7 @@ body {
   /*display: flex;
   justify-content: center;
   align-items: center; */
-  background-image: url('https://imgtr.ee/images/2023/06/01/S02eQ.jpg');
+  background-image: url('./images/Background.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;                
