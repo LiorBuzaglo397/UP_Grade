@@ -26,7 +26,7 @@ export const addCourse = async( req , res , next) =>{
     try{
         course.save();
     }catch(err){
-        return console.log(err);
+        return res.status(404).json({message : "Couldn't add course"});
     }
     return res.status(200).json({course});
 

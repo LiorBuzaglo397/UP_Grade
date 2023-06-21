@@ -44,4 +44,7 @@ const courseSchema = new Schema ({
     }
 });
 
+courseSchema.index({ course_ID: 1, semester_Year: 1, semester_Num: 1 }, { unique: true });
+
+
 export default mongoose.model("Courses" , courseSchema);

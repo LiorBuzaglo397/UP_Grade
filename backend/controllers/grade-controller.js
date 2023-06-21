@@ -19,12 +19,14 @@ export const getAllGrades=  async( req , res , next) =>{
 
 
 export const addGrade =  async( req , res , next) =>{
-    const {studentId , courseId , semester , gradeType , grade} = req.body;
+    const {user_Id , courseId , semester_Year , semester_Num, gradeType,gradeTypeNum , grade} = req.body;
     const graded = new Grade({
-        studentId , 
+        user_Id , 
         courseId ,
-        semester , 
+        semester_Year,
+        semester_Num , 
         gradeType , 
+        gradeTypeNum,
         grade
     });
     try{
@@ -37,12 +39,12 @@ export const addGrade =  async( req , res , next) =>{
 };
 
 export const getGradesByStudentID=  async( req , res , next) =>{
-    const studentId = req.Grade.studentId;
+    const user_Id = req.Grade.user_Id;
 
     let grade ;
     try{
 
-        grade = await Grade.find({studentId :studentId });
+        grade = await Grade.find({user_Id :user_Id });
     }catch(err){
         return console.log(err);
     }

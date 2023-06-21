@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const Schema = mongoose.Schema;
 
 const gradeSchema = new Schema({
@@ -9,16 +8,18 @@ const gradeSchema = new Schema({
       auto: true,
     },
     user_Id: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type:String,
       required: true,
     },
     courseId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Course',
+      type: String,
       required: true,
     },
-    semester: {
+    semester_Year: {
+      type: String,
+      required: true,
+    },
+    semester_Num: {
       type: String,
       required: true,
     },
@@ -27,11 +28,17 @@ const gradeSchema = new Schema({
       enum: ['test', 'lab', 'hw'],
       required: true,
     },
+    gradeTypeNum: {
+      type: Number,
+      required: true,
+    },
     grade: {
       type: Number,
       required: true,
     },
   });
+
+
   
   const Grade = mongoose.model('Grade', gradeSchema);
   
