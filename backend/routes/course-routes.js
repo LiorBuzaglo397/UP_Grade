@@ -1,6 +1,6 @@
 import express from 'express'; 
 
-import {getAllCourses , addCourse ,addStudentToCourse ,addTeacherToCourse} from '../controllers/course-controller';
+import {getAllCourses , addCourse ,addStudentToCourse ,addTeacherToCourse} from '../controllers/course-controller.js';
 const courseRouter = express.Router();
 
 courseRouter.get("/" , getAllCourses);

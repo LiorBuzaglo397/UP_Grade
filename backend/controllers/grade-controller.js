@@ -1,4 +1,4 @@
-import Grade from "../model/Grade";
+import Grade from "../model/Grade.js";
 
 export const getAllGrades=  async( req , res , next) =>{
 

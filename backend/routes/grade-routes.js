@@ -1,5 +1,5 @@
 import express from 'express'; 
-import {getAllGrades ,addGrade ,getGradesByStudentID,getGradesByCourseID} from '../controllers/grade-controller';
+import {getAllGrades ,addGrade ,getGradesByStudentID,getGradesByCourseID} from '../controllers/grade-controller.js';
 
 const gradeRouter = express.Router();
 
