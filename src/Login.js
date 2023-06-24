@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Logo from './images/Logo.png';
 
 const Login = ({ handleLogin }) => {
   const [username, setUsername] = useState('');
@@ -20,7 +20,7 @@ const Login = ({ handleLogin }) => {
 
   return (
     <div className='login-div'>
-      <img src='https://imgtr.ee/images/2023/06/01/S83jq.png' alt="logo" />
+      <img src={Logo} alt="logo" />
       <div className="login-container">
         <h1>Login to the system</h1>
         <form onSubmit={handleLoginFormSubmit}>

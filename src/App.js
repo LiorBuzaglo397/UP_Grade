@@ -7,6 +7,7 @@ import Login from './Login';
 import StudentGrades from './StudentGrades';
 import TeacherCourseGrades from './TeacherCourseGrades';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Logo from './images/Logo.png';
 
 /*****  bootstrap ******/
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -79,7 +80,7 @@ const App = () => {
                 <Navbar handleLogout={handleLogout} />
                 <div className='dashboard-div'>
                   <br></br>
-                  <img className='dashboard-img' src='https://imgtr.ee/images/2023/06/01/S83jq.png' alt="logo" />
+                  <img className='dashboard-img' src={Logo} alt="logo" />
                   <h1>Welcome to UP-GRADE Website</h1><br></br>
                   <button onClick={handleLogout}>Logout</button><br></br>
                   <label>
