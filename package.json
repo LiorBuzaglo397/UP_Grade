@@ -1,5 +1,5 @@
 {
-  "name": "web-project",
+  "name": "up_grade",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +12,7 @@
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^1.1.5",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },
@@ -47,6 +47,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.0"
-  }
+    "concurrently": "^8.2.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiorBuzaglo397/UP_Grade.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LiorBuzaglo397/UP_Grade/issues"
+  },
+  "homepage": "https://github.com/LiorBuzaglo397/UP_Grade#readme"
 }
