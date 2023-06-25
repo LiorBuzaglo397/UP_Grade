@@ -6,7 +6,7 @@ import TeacherDashboard from './TeacherDashboard';
 import Login from './Login';
 import StudentGrades from './StudentGrades';
 import TeacherCourseGrades from './TeacherCourseGrades';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch ,useHistory } from 'react-router-dom';
 import Logo from './images/Logo.png';
 
 /*****  bootstrap ******/
@@ -18,12 +18,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Alert from 'react-bootstrap/Alert';
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-  integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-  crossorigin="anonymous"
-/>
+
 
 
 const App = () => {
@@ -32,7 +27,7 @@ const App = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      const response = await fetch('localhost:5000/api/use/login', {
+      const response = await fetch('localhost:5000/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +35,7 @@ const App = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      if (response.ok) {
+      if (response.data === "Successfull") {
         setLoggedIn(true);
       } else {
         alert('Invalid username or password.');
