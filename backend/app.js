@@ -9,6 +9,10 @@ import gradeRouter from './routes/grade-routes.js';
 
 const app = express();
 app.use(express.json());
+app.use((req , res , next) => {
+    console.log(req.path , req.method);
+    next();
+});
 app.use("/api/user",router);
 app.use("/api/course" ,courseRouter );
 app.use("/api/grade" ,gradeRouter )

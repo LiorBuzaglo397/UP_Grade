@@ -9,6 +9,8 @@ import TeacherCourseGrades from './TeacherCourseGrades';
 import { BrowserRouter as Router, Route, Switch ,useHistory } from 'react-router-dom';
 import Logo from './images/Logo.png';
 
+
+
 /*****  bootstrap ******/
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Badge from 'react-bootstrap/Badge';
@@ -25,17 +27,17 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userType, setUserType] = useState('');
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (email, user_Password) => {
     try {
       const response = await fetch('localhost:5000/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, user_Password }),
       });
 
-      if (response.data === "Successfull") {
+      if (response.ok) {
         setLoggedIn(true);
       } else {
         alert('Invalid username or password.');
