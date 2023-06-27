@@ -9,8 +9,9 @@ const Navbar = ({ handleLogout }) => {
         <img className='nav-img' src={Logo}></img>
         <h3> The UP-GRADE website</h3>
         <div className="links">
-        <a href="/">  Home  </a>
-        <a href="/create">  New Course  </a>
+        <Link to="/">Home</Link>
+        <Link to="/student-dashboard">Courses</Link>
+        <Link to="/teacher-dashboard">teacher Courses</Link>
           <Button onClick={handleLogout} variant="outline-primary">Logout</Button>
         </div>
       </nav>
