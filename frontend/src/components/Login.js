@@ -6,8 +6,8 @@ import axios from 'axios';
 const Login = () => {
   const history = useHistory();
   const [inputs, setInputs] = useState({
-    email: "",
-    user_Password: "",
+    email: '',
+    user_Password: '',
   });
 
   const handleChange = (e) => {
@@ -23,38 +23,43 @@ const Login = () => {
         email: inputs.email,
         user_Password: inputs.user_Password,
       });
-  
+
       const data = res?.data || null;
       return data;
     } catch (error) {
       console.error(error);
-      return null; // Return a default value or handle the error case as needed
+      throw new Error('Failed to login'); // Throw an error to handle in handleSubmit
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputs);
-    sendRequest().then(() => history.push("/StudentDashboard"));
+
+    if (!inputs.email || !inputs.user_Password) {
+      window.alert('Please fill in all fields');
+    } else {
+      sendRequest()
+        .then(() => history.push('/StudentDashboard'))
+        .catch((error) => window.alert(error.message));
+    }
   };
-  
 
   return (
-    <div className='login-div'>
-      <div className='login-container'>
+    <div className="login-div">
+      <div className="login-container">
         <h1>Login to the system</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="email"
-            name="email" // Added name attribute
+            name="email"
             value={inputs.email}
             onChange={handleChange}
           />
           <input
             type="password"
             placeholder="Password"
-            name="user_Password" // Added name attribute
+            name="user_Password"
             value={inputs.user_Password}
             onChange={handleChange}
           />

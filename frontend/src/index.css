@@ -373,6 +373,42 @@ nav a:hover{
   }
 }
 
+/* CSS for the pop-up window design */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.popup-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.popup-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.popup-close {
+  color: #999999;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popup-close:hover {
+  color: #666666;
+}
 
 
 
