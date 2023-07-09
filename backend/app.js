@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from "mongoose";
 import router from './routes/user-routes.js';
+import cookieParser from 'cookie-parser';
 
 import courseRouter from './routes/course-routes.js';
 import gradeRouter from './routes/grade-routes.js';
@@ -9,6 +10,7 @@ import cors from 'cors';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use((req, res, next) => {
     console.log(req.path, req.method);
     next();

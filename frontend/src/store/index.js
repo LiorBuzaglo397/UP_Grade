@@ -18,3 +18,6 @@ export const userActions = userSlice.actions;
 export const store = configureStore({
     reducer : userSlice.reducer
 });
+
+export const { login, logout } = userSlice.actions;
+export default store;
