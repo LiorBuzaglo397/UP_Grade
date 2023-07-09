@@ -56,17 +56,21 @@ export const login = async(req , res , next) => {
     const {email,  user_Password  } = req.body;
     let existingUser;
     try{
-        existingUser = await  User.findOne({email});
+        existingUser = await User.findOne({email : email});
     }catch(err){
         return console.log(err);
     }
     if(!existingUser){ //if the user is already singUp to the website
         return res
-            .status(404)
+            .status(400)
             .json({message : "Couldn't Find User By This Email"});
     }
+console.log('user_Password:', user_Password);
+console.log('existingUser.user_Password:', existingUser.user_Password);
+
     
-    const isPasswordCorrect = brcypt.compareSync(user_Password , existingUser.user_Password);
+    const isPasswordCorrect = await brcypt.compareSync( user_Password , existingUser.user_Password);
+    console.log(isPasswordCorrect);
     if(!isPasswordCorrect){
        return res.status(400).json({message : "Incorrect Password"});
     }

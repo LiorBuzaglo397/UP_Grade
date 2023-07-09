@@ -1,32 +1,38 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch ,useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Logo from './images/Logo.png';
 import { Button } from 'bootstrap';
-import {useSelector} from "react-redux"
-
+import { useSelector } from "react-redux";
 
 function Header() {
-  const isLoggedIn = useSelector(state=> state.isLoggedIn);
-  return (
-<Router>
-      <div>
-        <Switch>
-        <div className='dashboard-div'>
-                  <br></br>
-                  <img className='dashboard-img' src={Logo} alt="logo" />
-                  <h1>Welcome to UP-GRADE Website</h1><br></br>
-                {!isLoggedIn &&
-                <>
-                <button>Login</button>
-                  <br></br>
-                  <br></br>
-                  <button>Signup</button>
-               </>   }
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const history = useHistory();
 
-          </div>
+  const handleLoginClick = () => {
+    history.push('/Login');
+  };
+
+  const handleSignupClick = () => {
+    history.push('/SignUp');
+  };
+
+  return (
+    <div className='dashboard-div'>
+      <br />
+      <img className='dashboard-img' src={Logo} alt="logo" />
+      <h1>Welcome to UP-GRADE Website</h1>
+      <br />
+      <Router>
+        <Switch>
+        <button onClick={handleLoginClick}>Login</button>
+        <br />
+        <br />
+        <button onClick={handleSignupClick}>Signup</button>
         </Switch>
-      </div>
-    </Router>  )
+      </Router>
+    </div>
+  );
 }
 
-export default Header
+export default Header;
