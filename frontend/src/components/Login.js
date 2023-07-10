@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 import Logo from './images/Logo.png';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+
+// Rest of the code...
+
 
 const Login = () => {
   const history = useHistory();
@@ -28,7 +32,7 @@ const Login = () => {
       return data;
     } catch (error) {
       console.error(error);
-      throw new Error('Failed to login'); // Throw an error to handle in handleSubmit
+      throw new Error('Failed to login' + error.message); // Throw an error to handle in handleSubmit
     }
   };
 
@@ -39,12 +43,27 @@ const Login = () => {
       window.alert('Please fill in all fields');
     } else {
       sendRequest()
-        .then(() => history.push('/StudentDashboard'))
-        .catch((error) => window.alert(error.message));
-    }
+      .then((data) => {
+        // Check if the user is a student
+        if ( data.user.user_Description === "Student") {
+          localStorage.setItem('studentInfo', JSON.stringify(data.user));
+          history.push('/StudentDashboard');
+        } else if ( data.user.user_Description === "Teacher") {
+          // Handle other user types or invalid responses
+          localStorage.setItem('studentInfo', JSON.stringify(data.user));
+          history.push('/TeacherDashboard');
+        }
+        else{
+          localStorage.setItem('teacherInfo', JSON.stringify(data));
+          window.alert('The password of email are incorrect');
+        }
+      })
+      .catch((error) => window.alert(error.message));
+  }
   };
 
   return (
+    
     <div className="login-div">
       <div className="login-container">
         <h1>Login to the system</h1>

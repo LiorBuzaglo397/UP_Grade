@@ -36,6 +36,11 @@ const gradeSchema = new Schema({
       type: Number,
       required: true,
     },
+    gradeUploadDate: {
+      type: String,
+      required: true,
+    },
+
   });
 
 

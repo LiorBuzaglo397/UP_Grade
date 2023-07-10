@@ -19,7 +19,7 @@ export const getAllGrades=  async( req , res , next) =>{
 
 
 export const addGrade =  async( req , res , next) =>{
-    const {user_Id , courseId , semester_Year , semester_Num, gradeType,gradeTypeNum , grade} = req.body;
+    const {user_Id , courseId , semester_Year , semester_Num, gradeType,gradeTypeNum , grade , gradeUploadDate} = req.body;
     const graded = new Grade({
         user_Id , 
         courseId ,
@@ -27,7 +27,8 @@ export const addGrade =  async( req , res , next) =>{
         semester_Num , 
         gradeType , 
         gradeTypeNum,
-        grade
+        grade,
+        gradeUploadDate
     });
     try{
         graded.save();

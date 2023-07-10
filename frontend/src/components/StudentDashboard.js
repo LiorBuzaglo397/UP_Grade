@@ -1,24 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-const StudentDashboard = ()=> {
+const StudentDashboard = () => {
+  // Retrieve student info from localStorage
+  const studentInfo = JSON.parse(localStorage.getItem('studentInfo'));
+
   return (
     <div>
-    <h2>Student Dashboard</h2>
-    <h3>Your Courses:</h3>
-    <ul>
-      {/* {courses.map((course) => (
-        <Link to={`/student-grades/${course.name}`} key={course.id}>
-          <button>
-            {course.name}
-          </button>
-        </Link>
-      ))} */}
-    </ul>
+      <h1>Welcome to the Student Dashboard</h1>
+      <h2>Student Information:</h2>
+      <p>Name: {studentInfo.first_Name}</p>
+      <p>Email: {studentInfo.email}</p>
 
-
-  </div>
-);
-  
+      {/* Other dashboard content */}
+    </div>
+  );
 };
 
-export default StudentDashboard
+export default StudentDashboard;
