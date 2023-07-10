@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
 import Logo from './images/Logo.png';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';

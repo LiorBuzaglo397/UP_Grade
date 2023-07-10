@@ -29,8 +29,7 @@ const StudentDashboard = () => {
 
   const handleCourseSelection = (event) => {
     setSelectedCourse(event.target.value);
-    const courseName = courses.find((course) => course.id === event.target.value)?.name;
-    setSelectedCourseName(courseName);
+
   };
 
   return (
@@ -41,8 +40,8 @@ const StudentDashboard = () => {
         <select value={selectedCourse} onChange={handleCourseSelection}>
           <option value="">Select a course</option>
           {courses.map((course) => (
-            <option value={course.name} key={course.id}>
-              {course.name}
+            <option value={course.course_Name} key={course.course_ID}>
+              {course.course_Name}
             </option>
           ))}
         </select>

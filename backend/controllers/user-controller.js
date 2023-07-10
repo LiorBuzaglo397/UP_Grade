@@ -1,5 +1,6 @@
 import User from "../model/User.js";
 import brcypt from 'bcryptjs' ;
+import Courses from "../model/Courses.js";
 
 export const getAllUser = async(req ,res , next ) =>{
     let users;
@@ -99,7 +100,10 @@ export const getAllCourses = async (req, res, next) => {
       return res.status(404).json({ message: "No courses found for the user" });
     }
 
-    return res.status(200).json({ courses });
+    const courselist = await Courses.find({ _id: { $in: courses } });
+
+
+    return res.status(200).json({ courses: courselist });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "An error occurred" });
@@ -120,6 +124,11 @@ export const addCourseToStudent = async (req, res, next) => {
       user.courses = []; // Initialize the courses array if it doesn't exist
     }
 
+    // Check if the course ID already exists in the user's courses array
+    if (user.courses.includes(_id)) {
+      return res.status(400).json({ message: "Course already added to user" });
+    }
+
     user.courses.push(_id);
     await user.save();
 
@@ -129,3 +138,4 @@ export const addCourseToStudent = async (req, res, next) => {
     return res.status(500).json({ message: "An error occurred" });
   }
 };
+
