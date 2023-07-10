@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 import { useHistory } from 'react-router-dom';
 import TeacherCourseGrades from './TeacherCourseGrades';
 import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const TeacherDashboard = () => {
   const history = useHistory();
@@ -106,19 +107,20 @@ const TeacherDashboard = () => {
 
   return (
     <div>
-      <h2>Teacher Dashboard</h2>
-      <h3>Your Courses:</h3>
-      <ul>
-        {courses.map((course) => (
-          <Link to={`/teacher-grades/${course.name}`} key={course.id}>
-            <button>
-              {course.name}
-            </button>
-          </Link>
-        ))}
-      </ul>
-
-
+        <Navbar />
+          <div className='dashboard-div'>
+        <h2>Teacher Dashboard</h2>
+        <h3>Your Courses:</h3>
+        <ul>
+          {courses.map((course) => (
+            <Link to={`/teacher-grades/${course.name}`} key={course.id}>
+              <button>
+                {course.name}
+              </button>
+            </Link>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

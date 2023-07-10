@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import GradeDistributionPage from './GradeDistributionPage';
 import StudentGrades from './StudentGrades';
+import Navbar from './Navbar';
 
 const StudentDashboard = () => {
   const [courses, setCourses] = useState([
@@ -45,19 +45,20 @@ const StudentDashboard = () => {
 */
   return (
     <div>
-      <h2>Student Dashboard</h2>
-      <h3>Your Courses:</h3>
-      <ul>
-        {courses.map((course) => (
-          <Link to={`/student-grades/${course.name}`} key={course.id}>
-            <button>
-              {course.name}
-            </button>
-          </Link>
-        ))}
-      </ul>
-
-
+      <Navbar />
+        <div className='dashboard-div'>
+        <h2>Student Dashboard</h2>
+        <h3>Your Courses:</h3>
+        <ul>
+          {courses.map((course) => (
+            <Link to={`/student-grades/${course.name}`} key={course.id}>
+              <button>
+                {course.name}
+              </button>
+            </Link>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
