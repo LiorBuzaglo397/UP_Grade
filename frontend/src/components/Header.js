@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import Logo from './images/Logo.png';
-import { Button } from 'bootstrap';
 import { useSelector } from "react-redux";
 
 function Header() {
@@ -25,6 +24,7 @@ function Header() {
       <br />
       <Router>
         <Switch>
+        
         <button onClick={handleLoginClick}>Login</button>
         <br />
         <br />

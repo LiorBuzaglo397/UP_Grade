@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import StudentDashboard from "./components/StudentDashboard";
@@ -14,7 +14,7 @@ function App() {
     <React.Fragment>
       <Router>
         <header>
-          <Header />
+          <Header/>
         </header>
         <main>
           <Switch>

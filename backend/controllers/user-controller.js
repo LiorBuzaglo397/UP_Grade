@@ -16,7 +16,7 @@ export const getAllUser = async(req ,res , next ) =>{
 }
 
 export const signup = async(req ,res , next) =>{
-    const {user_ID , user_Password , first_Name , last_Name ,email , user_Description , user_Approved} = req.body;
+    const {user_ID , user_Password , first_Name , last_Name ,email , user_Description , user_Approved , courses} = req.body;
     
 
     let existingUser;
@@ -39,7 +39,8 @@ export const signup = async(req ,res , next) =>{
         email ,
         user_Description ,
         user_Approved ,
-        user_Password : hashedPassword
+        user_Password : hashedPassword,
+        courses
     });
 
 
@@ -79,26 +80,52 @@ export const login = async(req , res , next) => {
 };
 
 export const getAllCourses = async (req, res, next) => {
-    const { user_ID } = req.User.user_ID;
-  
-    try {
-      // Find the user by their ID
-      const user = await User.findById(user_ID);
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      // Retrieve the user's courses
-      const courses = user.courses;
-  
-      if (courses.length === 0) {
-        return res.status(404).json({ message: "No courses found for the user" });
-      }
-  
-      return res.status(200).json({ courses });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ message: "An error occurred" });
+  const { user_ID } = req;
+
+  try {
+    // Find the user by their ID
+    const user = await User.findOne(user_ID);
+
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  };
+
+    // Retrieve the user's courses
+    const courses = user.courses;
+
+    if (courses.length === 0) {
+      return res.status(404).json({ message: "No courses found for the user" });
+    }
+
+    return res.status(200).json({ courses });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+export const addCourseToStudent = async (req, res, next) => {
+  const { studentId, _id } = req.body;
+
+  try {
+    const user = await User.findOne({ studentId: studentId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!Array.isArray(user.courses)) {
+      user.courses = []; // Initialize the courses array if it doesn't exist
+    }
+
+    user.courses.push(_id);
+    await user.save();
+
+    return res.status(200).json({ message: "Course added to user successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};

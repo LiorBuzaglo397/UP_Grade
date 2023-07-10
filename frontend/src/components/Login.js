@@ -3,11 +3,11 @@ import Cookies from 'js-cookie';
 import Logo from './images/Logo.png';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-
-// Rest of the code...
-
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../store'; // Update the import path in Login.js
 
 const Login = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [inputs, setInputs] = useState({
     email: '',
@@ -47,14 +47,15 @@ const Login = () => {
         // Check if the user is a student
         if ( data.user.user_Description === "Student") {
           localStorage.setItem('studentInfo', JSON.stringify(data.user));
+          dispatch(login()); // Dispatch the login action
           history.push('/StudentDashboard');
         } else if ( data.user.user_Description === "Teacher") {
           // Handle other user types or invalid responses
           localStorage.setItem('studentInfo', JSON.stringify(data.user));
+          dispatch(login()); // Dispatch the login action
           history.push('/TeacherDashboard');
         }
         else{
-          localStorage.setItem('teacherInfo', JSON.stringify(data));
           window.alert('The password of email are incorrect');
         }
       })

@@ -32,16 +32,18 @@ const courseSchema = new Schema ({
     },
 
 
-    student_List :{
-        type : [String],
-        default : []
-
-    },
-
-    teacher_list :{
-        type : [String],
-        default : []
-    }
+    student_List: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
+      teacher_List: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
 });
 
 courseSchema.index({ course_ID: 1, semester_Year: 1, semester_Num: 1 }, { unique: true });
