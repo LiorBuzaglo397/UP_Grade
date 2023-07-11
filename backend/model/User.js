@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 import Courses from './Courses';
 
 const userSchema = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+  },
+
   user_ID: {
     type: String,
     unique: true,

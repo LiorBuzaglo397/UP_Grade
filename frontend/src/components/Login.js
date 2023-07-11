@@ -43,20 +43,27 @@ const Login = () => {
     } else {
       sendRequest()
       .then((data) => {
+        localStorage.setItem('studentInfo', JSON.stringify(data.user));
+        dispatch(login()); // Dispatch the login action
+
+        history.push('/StudentDashboard');
+
         // Check if the user is a student
+        /*
         if ( data.user.user_Description === "Student") {
           localStorage.setItem('studentInfo', JSON.stringify(data.user));
           dispatch(login()); // Dispatch the login action
+
           history.push('/StudentDashboard');
         } else if ( data.user.user_Description === "Teacher") {
           // Handle other user types or invalid responses
-          localStorage.setItem('studentInfo', JSON.stringify(data.user));
+          localStorage.setItem('teacherInfo', JSON.stringify(data.user));
           dispatch(login()); // Dispatch the login action
           history.push('/TeacherDashboard');
         }
         else{
           window.alert('The password of email are incorrect');
-        }
+        }*/
       })
       .catch((error) => window.alert(error.message));
   }

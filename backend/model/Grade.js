@@ -8,13 +8,11 @@ const gradeSchema = new Schema({
       auto: true,
     },
     user_Id: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: String,
       required: true,
     },
     courseId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Courses',
+      type: String,
       required: true,
     },
     semester_Year: {
