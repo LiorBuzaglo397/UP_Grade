@@ -1,62 +1,95 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import Navbar from './Navbar';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import Navbar from './Navbar';
+import Button from 'react-bootstrap/Button';
 
 const StudentGrades = () => {
-  const { user_Id, courseId, semester_Year, semester_Num } = useParams();
-  const history = useHistory();
+  const { courseId, semester_Year, semester_Num } = JSON.parse(localStorage.getItem('studentGradesParams'));
+  const studentInfo = JSON.parse(localStorage.getItem('studentInfo'));
+
+  const CourseInfo = {
+    courseId,
+    semester_Year,
+    semester_Num,
+  };
+
   const [grades, setGrades] = useState([]);
+  const { course } = useParams();
+  const history = useHistory();
+  const [filteredGrades, setFilteredGrades] = useState([]);
 
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const studentGradesParams = JSON.parse(localStorage.getItem('studentGradesParams'));
-
-        const response = await axios.get('http://localhost:5000/api/grade'); 
-        const gradesData = response.data.grades;
-
-        setGrades(gradesData);
+        const response = await axios.get('localhost:5000/api/grade/getGradesByCourseIDForStudent', {
+          user_Id: studentInfo.user_Id,
+          courseId: CourseInfo.courseId,
+          semester_Year: CourseInfo.semester_Year,
+          semester_Num: CourseInfo.semester_Num,
+        });
+        setGrades(response.data);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching grades:', error);
       }
     };
-
+  
     fetchGrades();
-  }, [studentID, courseID]);
+  }, []);
+  
+
+
+  useEffect(() => {
+    const filterGrades = () => {
+      if (Array.isArray(grades)) {
+        const filtered = grades.filter((grade) => grade.course === course);
+        setFilteredGrades(filtered);
+      }
+    };
+    
+
+    filterGrades();
+  }, [grades, course]);
+
+  const handleStatsClick = (id, name) => {
+    // Handle the click event for viewing statistics
+    // You can implement the logic here
+    console.log('View stats for grade:', id, name);
+  };
 
   return (
     <div>
-      <Navbar />
+
       <div className='table-wrapper'>
-        <br />
-        <h2>Grades for Course {courseID}</h2>
-        <table className='grade-table'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date of Submission</th>
-              <th>Type</th>
-              <th>Grade</th>
-              <th>Stats</th>
-            </tr>
-          </thead>
-          <tbody>
-            {grades.map((grade) => (
-              <tr key={grade.id}>
+        <br></br>
+        <h2>Grades for {course}</h2>
+        {filteredGrades.map((grade) => (
+          <table key={grade.id} className='grade-table'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date of Submission</th>
+                <th>Type</th>
+                <th>Grade</th>
+                <th>Stats</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
                 <td>{grade.name}</td>
                 <td>{grade.date}</td>
                 <td>{grade.type}</td>
                 <td>{grade.grade}</td>
                 <td>
-                  <Button variant='primary'>View stats</Button>
+                  <Button onClick={() => handleStatsClick(grade.id,grade.name)} variant='primary'>
+                    View stats
+                  </Button>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <br />
+            </tbody>
+          </table>
+        ))}
+        <br></br>
         <button onClick={() => history.goBack()} className='back-button'>
           Go Back
         </button>

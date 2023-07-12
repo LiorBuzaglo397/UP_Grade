@@ -1,6 +1,8 @@
 import User from "../model/User.js";
 import brcypt from 'bcryptjs' ;
 import Courses from "../model/Courses.js";
+import { ObjectId } from 'mongodb';
+
 
 export const getAllUser = async(req ,res , next ) =>{
     let users;
@@ -80,14 +82,12 @@ export const login = async(req , res , next) => {
 
 };
 
+
 export const getAllCourses = async (req, res, next) => {
-  const { user_ID } = req;
+  const { _id } = req.query;
 
   try {
-    // Find the user by their ID
-    const user = await User.findOne(user_ID);
-
-    console.log(user);
+    const user = await User.findById(_id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -96,19 +96,16 @@ export const getAllCourses = async (req, res, next) => {
     // Retrieve the user's courses
     const courses = user.courses;
 
-    if (courses.length === 0) {
-      return res.status(404).json({ message: "No courses found for the user" });
-    }
+    console.log(courses);
 
-    const courselist = await Courses.find({ _id: { $in: courses } });
-
-
-    return res.status(200).json({ courses: courselist });
+    return res.status(200).json({ courses });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "An error occurred" });
   }
 };
+
+
 
 export const addCourseToStudent = async (req, res, next) => {
   const { studentId, _id } = req.body;

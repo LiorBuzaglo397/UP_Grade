@@ -87,7 +87,13 @@ code {
   border-radius: 5px;
   color: black;
 }
+.button-container {
+  display: flex;
+}
 
+.header-button {
+  margin-right: 10px;
+}
 .login-container button {
   width: 80%;
   padding: 10px;

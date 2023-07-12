@@ -84,36 +84,38 @@ export const getGradesByCourseIDForTeacher = async (req, res, next) => {
   }
 };
 
-/*
 export const getGradesByCourseIDForStudent = async (req, res, next) => {
-  const { user_Id, courseId ,semester_Year ,semester_Num} = req.params;
+  const { user_Id, courseId, semester_Year, semester_Num } = req.query;
 
   try {
-    const userExists = await User.find({ user_Id : user_Id });
+    const userExists = await User.find({ user_Id: user_Id });
     if (!userExists) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(user_Id );
+    console.log(user_Id);
 
-    const grades = await Grade.find();
+    const grades = await Grade.find({
+      user_Id,
+      courseId,
+      semester_Year,
+      semester_Num
+    });
+
     if (grades.length === 0) {
       return res.status(404).json({ message: "No grades found" });
     }
 
+    //const prageMap = new Map();
+    //for (const grade in grades) {
+     // prageMap.set(user_Id, grades[grade]);
+   // }
 
-    const prageMap = new Map();
-    for(const grade in grades){
-      if(grades[grade].user_Id === user_Id && grades[grade].courseId === courseId && grades[grade]===semester_Year & grades[grade]===semester_Num){
-        prageMap.set(user_Id ,grades[grade] );
-
-      }
-    }
-
-    return res.status(200).json({ prageMap });
+    return res.status(200).json({ grades });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal server error" });
   }
-};*/
+};
+
 
   

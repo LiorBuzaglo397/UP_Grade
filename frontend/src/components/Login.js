@@ -37,40 +37,37 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (!inputs.email || !inputs.user_Password) {
       window.alert('Please fill in all fields');
     } else {
       sendRequest()
-      .then((data) => {
-        localStorage.setItem('studentInfo', JSON.stringify(data.user));
-        dispatch(login()); // Dispatch the login action
-
-        history.push('/StudentDashboard');
-
-        // Check if the user is a student
-        /*
-        if ( data.user.user_Description === "Student") {
-          localStorage.setItem('studentInfo', JSON.stringify(data.user));
-          dispatch(login()); // Dispatch the login action
-
-          history.push('/StudentDashboard');
-        } else if ( data.user.user_Description === "Teacher") {
-          // Handle other user types or invalid responses
-          localStorage.setItem('teacherInfo', JSON.stringify(data.user));
-          dispatch(login()); // Dispatch the login action
-          history.push('/TeacherDashboard');
-        }
-        else{
-          window.alert('The password of email are incorrect');
-        }*/
-      })
-      .catch((error) => window.alert(error.message));
-  }
+        .then((data) => {
+          // Remove previous studentInfo from localStorage
+          localStorage.removeItem('studentInfo');
+  
+          if (data.user.user_Description === 'Student') {
+            localStorage.setItem('studentInfo', JSON.stringify(data.user));
+            dispatch(login());
+            history.push('/StudentDashboard');
+          } else if (data.user.user_Description === 'Teacher') {
+            // Remove previous teacherInfo from localStorage
+            localStorage.removeItem('teacherInfo');
+            localStorage.setItem('teacherInfo', JSON.stringify(data.user));
+            dispatch(login());
+            history.push('/TeacherDashboard');
+          } else {
+            window.alert('The password or email is incorrect');
+          }
+        })
+        .catch((error) => window.alert(error.message));
+    }
   };
+  
 
   return (
-    
+    <div>
+      
     <div className="login-div">
       <div className="login-container">
         <h1>Login to the system</h1>
@@ -92,6 +89,7 @@ const Login = () => {
           <button type="submit">Login</button>
         </form>
       </div>
+    </div>
     </div>
   );
 };

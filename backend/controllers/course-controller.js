@@ -33,10 +33,10 @@ export const addCourse = async( req , res , next) =>{
 };
 
 export const addStudentToCourse = async( req , res , next) =>{
-    const { year, semester, course_ID ,studentId } = req.body;
-  
+    const {studentId , course_ID ,semester_Year, semester_Num } = req.body;
+
     try {
-      const course = await Courses.findOne({ year: year, semester: semester , course_ID: course_ID });
+      const course = await Courses.findOne({ course_ID: course_ID, semester_Year: semester_Year , semester_Num: semester_Num });
       
       if (!course) {
         return res.status(404).json({ message: "No course found for the specified year and semester." });
@@ -52,19 +52,20 @@ export const addStudentToCourse = async( req , res , next) =>{
     }
   };
   export const addTeacherToCourse = async (req, res, next) => {
-    const { year, semester,course_ID ,teacherId } = req.body;
-    
+    const {teacherId , course_ID ,semester_Year, semester_Num } = req.body;
+
     try {
-      const course = await Courses.findOne({ year: year, semester: semester , course_ID :course_ID });
+      const course = await Courses.findOne({ course_ID: course_ID, semester_Year: semester_Year , semester_Num: semester_Num });
       
       if (!course) {
         return res.status(404).json({ message: "No course found for the specified year and semester." });
       }
-      
-      course.teacher_list.push(teacherId);
+
+      //need to add a chacking if theid is already inside
+      course.teacher_List.push(teacherId);
       await course.save();
       
-      return res.status(200).json({ message: "Student added to the course successfully." });
+      return res.status(200).json({ message: "Teacher added to the course successfully." });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ message: "An error occurred" });
@@ -81,10 +82,10 @@ export const addStudentToCourse = async( req , res , next) =>{
         return res.status(404).json({ message: "No course found for the specified year and semester." });
       }
       
-      course.teacher_list.push(teacherId);
+      course.teacher_List.push(teacherId);
       await course.save();
       
-      return res.status(200).json({ message: "Student added to the course successfully." });
+      return res.status(200).json({ message: "Teacher added to the course successfully." });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ message: "An error occurred" });
