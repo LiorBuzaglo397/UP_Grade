@@ -9,7 +9,10 @@ import StatsGrades from "./components/StatsGrades";
 import GradeDistributionPage from "./components/GradeDistributionPage";
 import TeacherDashboard from "./components/TeacherDashboard";
 import TeacherCourseGrades from "./components/TeacherCourseGrades";
-import TeacherAddNewGrades from "./components/TeacherAddNewGrades" 
+import TeacherAddNewGrades from "./components/TeacherAddNewGrades" ;
+import TeacherAddGradesWithFile from "./components/TeacherAddGradesWithFile" ;
+
+//TeacherAddGradesWithFile
 
 import { useSelector } from "react-redux";
 
@@ -30,6 +33,7 @@ function App() {
             <Route path="/StudentDashboard" component={StudentDashboard} />
             <Route path="/StudentGrades" component={StudentGrades} />
             <Route path="/StatsGrades" component={StatsGrades} />
+            <Route path="/TeacherAddGradesWithFile" component={TeacherAddGradesWithFile} />
 
             <Route path="/GradeDistributionPage" component={GradeDistributionPage} />
             <Route path="/TeacherDashboard" component={TeacherDashboard} />

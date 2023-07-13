@@ -19,7 +19,8 @@ const TeacherCourseGrades = () => {
   const { course } = useParams();
   const history = useHistory();
   const [filteredGrades, setFilteredGrades] = useState([]);
-
+  console.log(filteredGrades);
+  console.log(grades);
   useEffect(() => {
     const fetchGrades = async () => {
       try {
@@ -42,8 +43,14 @@ const TeacherCourseGrades = () => {
 
   const handleSignupClick = () => {
     console.log(filteredGrades);
-    localStorage.setItem('grades', JSON.stringify(filteredGrades));
+    console.log(grades);
+    localStorage.setItem('grades', JSON.stringify(grades));
     history.push('/TeacherAddNewGrades');
+  };
+  //handleFileOnClick
+  const handleFileOnClick = () => {
+
+    history.push('/TeacherAddGradesWithFile');
   };
 
   return (
@@ -82,6 +89,9 @@ const TeacherCourseGrades = () => {
         </button>
         <button className='header-button' onClick={handleSignupClick}>
           Add new Assignments
+        </button>
+        <button className='header-button' onClick={handleFileOnClick}>
+          Add new Assignments with file
         </button>
       </div>
       {/* Render the TeacherAddNewGrades component and pass the required props */}

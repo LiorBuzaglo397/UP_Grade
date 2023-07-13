@@ -3,81 +3,133 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
-const TeacherAddNewGrades = ({ grades }) => {
+const TeacherAddNewGrades = () => {
   const history = useHistory();
 
-  const [gradeslist, setGradeslist] = useState(grades);
   const [assignmentType, setAssignmentType] = useState('');
-  const [assignmentGrades, setAssignmentGrades] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const storedGrades = localStorage.getItem('grades');
+  const [grades, setGrades] = useState([]);
 
   useEffect(() => {
-    const currentDate = new Date().toLocaleDateString('en-US');
-    setGradeslist((prevGrades) =>
-      prevGrades.map((student) => ({
-        ...student,
-        gradeUploadDate: currentDate,
-      }))
-    );
-  }, []);
-
-  const handleChange = (e, studentId) => {
-    const { name, value } = e.target;
-
-    setGradeslist((prevGrades) => {
-      const updatedGrades = prevGrades.map((student) => {
-        if (student.user_ID === studentId) {
-          return {
-            ...student,
-            [name]: value,
-          };
+    const fetchGrades = async () => {
+      try {
+        const storedGrades = localStorage.getItem('grades');
+        if (storedGrades) {
+          const parsedGrades = JSON.parse(storedGrades);
+          setGrades(parsedGrades);
+        } else {
+          setGrades([]);
         }
-        return student;
-      });
+      } catch (error) {
+        console.error('Error fetching grades:', error);
+      }
+    };
 
-      return updatedGrades;
-    });
-  };
+    fetchGrades();
+  }, []);
 
   const handleAssignmentTypeChange = (e) => {
     const { value } = e.target;
     setAssignmentType(value);
   };
 
-  const handleAddGrade = () => {
-    const updatedGrades = gradeslist.map((student) => {
-      const grade = assignmentGrades[student.user_ID] || '';
-      return {
-        ...student,
-        grade,
-      };
-    });
-
-    setGradeslist(updatedGrades);
-  };
-
   const handleSelectAssignmentType = () => {
-    const latestGradeTypeNum = getLatestGradeTypeNum(assignmentType);
-    setAssignmentGrades((prevGrades) => ({
-      ...prevGrades,
-      [assignmentType]: latestGradeTypeNum + 1,
-    }));
+    // Check if the assignment type is already in the grades list
+    const isAssignmentTypeExist = grades.some((grade) => grade.gradeType === assignmentType);
+
+    if (!isAssignmentTypeExist) {
+      const newGradeTypeNum = getLatestGradeTypeNum(assignmentType) + 1;
+      const newGrade = {
+        gradeType: assignmentType,
+        gradeTypeNum: newGradeTypeNum,
+        grades: [],
+      };
+
+      // Update the grades state with the new grade
+      setGrades((prevGrades) => [...prevGrades, newGrade]);
+    }
+
+    // Handle any other logic for selecting the assignment type
   };
+
+  const handleChange = (e, studentId) => {
+    const { name, value } = e.target;
+    const updatedGrades = grades.map((grade) => {
+      if (grade.user_ID === studentId) {
+        return { ...grade, grade: value };
+      }
+      return grade;
+    });
+    setGrades(updatedGrades);
+  };
+
+  const handleAddGrade = async () => {
+    try {
+      for (const student of grades) {
+        const {
+          user_ID,
+          course_ID,
+          semester_Year,
+          semester_Num,
+          gradeType,
+          gradeTypeNum,
+        } = student;
+        // Get the grade value from the input field or set a default value
+        const grade = student.grade || 0;
+        const gradeUploadDate = new Date().toLocaleDateString('en-GB');
+  
+        // Prepare the data to be sent to the backend
+        const data = {
+          user_ID,
+          course_ID,
+          semester_Year,
+          semester_Num,
+          gradeType,
+          gradeTypeNum,
+          grade,
+          gradeUploadDate,
+        };
+  
+        // Send the data to the backend API endpoint
+        await axios.post('http://localhost:5001/api/grade/add', data);
+      }
+  
+      // Clear the grades in the state after successful submission
+      setGrades([]);
+      setIsSubmitDisabled(true);
+  
+      // Show popup for successful grade addition
+      alert('Grades added successfully!');
+  
+      // Redirect to TeacherCourseGrades
+      history.push('/TeacherCourseGrades');
+    } catch (error) {
+      console.error('Error adding grades:', error);
+      // Handle and display the error to the user
+      // ...
+    }
+  };
+  
 
   const handleSubmit = () => {
-    // Your submit logic here
+    // Handle the logic for submitting grades
   };
 
   const getLatestGradeTypeNum = (assignmentType) => {
-    const assignmentGradesOfType = gradeslist.filter((grade) => grade.gradeType === assignmentType);
-    const latestGradeTypeNum = Math.max(...assignmentGradesOfType.map((grade) => grade.gradeTypeNum));
+    const assignmentGradesOfType = grades.filter((grade) => grade.gradeType === assignmentType);
+    const latestGradeTypeNum = Math.max(...assignmentGradesOfType.map((grade) => grade.gradeTypeNum), 0);
     return latestGradeTypeNum;
   };
 
   useEffect(() => {
-    const isAllGradesEntered = gradeslist.every((student) => student.grade !== '');
+    const isAllGradesEntered = grades.every((student) => student.grade !== '');
     setIsSubmitDisabled(!isAllGradesEntered);
-  }, [gradeslist]);
+  }, [grades]);
+  const uniqueGrades = Array.from(new Set(grades.map((student) => student.user_ID)))
+  .map((user_ID) => {
+    return grades.find((student) => student.user_ID === user_ID);
+  });
 
   return (
     <div className='table-wrapper'>
@@ -102,15 +154,12 @@ const TeacherAddNewGrades = ({ grades }) => {
           </tr>
         </thead>
         <tbody>
-          {gradeslist.map((student) => (
+          {uniqueGrades.map((student) => (
             <tr key={student.user_ID}>
               <td>{student.user_ID}</td>
               <td>
                 <input
                   type='number'
-                  min='0'
-                  max='100'
-                  value={student.grade}
                   onChange={(e) => handleChange(e, student.user_ID)}
                   name='grade'
                 />
@@ -122,11 +171,6 @@ const TeacherAddNewGrades = ({ grades }) => {
       <div>
         <Button onClick={handleAddGrade} disabled={isSubmitDisabled}>
           Add Grade
-        </Button>
-      </div>
-      <div>
-        <Button onClick={handleSubmit} disabled={isSubmitDisabled}>
-          Submit Grades
         </Button>
       </div>
     </div>
