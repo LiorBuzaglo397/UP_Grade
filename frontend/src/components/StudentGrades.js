@@ -1,26 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import Chart from 'chart.js/auto';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from './Navbar';
+import Button from 'react-bootstrap/Button';
 
-const StatsGrades = () => {
-  const history = useHistory();
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+const StudentGrades = () => {
+  const { course_ID, semester_Year, semester_Num } = JSON.parse(localStorage.getItem('studentGradesParams'));
+  const studentInfo = JSON.parse(localStorage.getItem('studentInfo'));
 
-  // Extract the URL parameters
-  const assignmentId = searchParams.get('assignmentId');
+  const CourseInfo = {
+    course_ID,
+    semester_Year,
+    semester_Num,
+  };
 
   const [grades, setGrades] = useState([]);
-  const [chartData, setChartData] = useState({});
-
-  const chartRef = useRef(null);
+  const { course } = useParams();
+  const history = useHistory();
+  const [filteredGrades, setFilteredGrades] = useState([]);
 
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/grade/getGradesByAssignmentId?assignmentId=${assignmentId}`);
+        const response = await axios.get(`http://localhost:5001/api/grade/getGradesByCourseIDForStudent?user_ID=${studentInfo.user_ID}&course_ID=${CourseInfo.course_ID}&semester_Year=${CourseInfo.semester_Year}&semester_Num=${CourseInfo.semester_Num}`);
+        console.log(response.data);
         setGrades(response.data.grades);
       } catch (error) {
         console.error('Error fetching grades:', error);
@@ -28,160 +30,106 @@ const StatsGrades = () => {
     };
 
     fetchGrades();
-  }, [assignmentId]);
+  }, [CourseInfo.course_ID, CourseInfo.semester_Num, CourseInfo.semester_Year, studentInfo.user_ID]);
 
   useEffect(() => {
-    if (Array.isArray(grades) && grades.length > 0) {
-      // Calculate statistics based on grades
-      const numStudents = grades.length;
-      const gradeValues = grades.map((grade) => grade.grade);
-      const averageGrade = calculateAverage(gradeValues);
-      const medianGrade = calculateMedian(gradeValues);
-      const standardDeviation = calculateStandardDeviation(gradeValues);
-      const highestGrade = Math.max(...gradeValues);
-      const lowestGrade = Math.min(...gradeValues);
-
-      // Prepare chart data
-      const gradeDistribution = calculateGradeDistribution(gradeValues);
-      const chartData = {
-        labels: Object.keys(gradeDistribution),
-        datasets: [
-          {
-            label: 'Grade Distribution',
-            data: Object.values(gradeDistribution),
-            backgroundColor: 'rgba(56, 31, 99, 0.8)',
-            borderColor: 'rgba(201, 83, 205, 1)',
-            borderWidth: 1,
-            fontSize: 28,
-          },
-        ],
-      };
-
-      setChartData(chartData);
+    if (Array.isArray(grades)) {
+      const filtered = grades.filter((grade) => grade.course_ID === course);
+      setFilteredGrades(filtered);
     }
-  }, [grades]);
+  }, [grades, course]);
 
-  useEffect(() => {
-    if (chartData) {
-      const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            title: {
-              display: true,
-              text: '%',
-              color: 'black',
-            },
-            ticks: {
-              color: 'black',
-              fontSize: 28,
-            },
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Grade Range',
-              color: 'black',
-            },
-            ticks: {
-              color: 'black',
-            },
-            font: {
-              size: 14,
-            },
-          },
-        },
-      };
-
-      const chart = new Chart(chartRef.current, {
-        type: 'bar',
-        data: chartData,
-        options: chartOptions,
-      });
-
-      return () => {
-        chart.destroy();
-      };
-    }
-  }, [chartData]);
-
-  const calculateAverage = (values) => {
-    const sum = values.reduce((acc, val) => acc + val, 0);
-    return sum / values.length;
-  };
-
-  const calculateMedian = (values) => {
-    const sorted = values.sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-  };
-
-  const calculateStandardDeviation = (values) => {
-    const mean = calculateAverage(values);
-    const squaredDifferences = values.map((val) => Math.pow(val - mean, 2));
-    const variance = calculateAverage(squaredDifferences);
-    return Math.sqrt(variance);
-  };
-
-  const calculateGradeDistribution = (values) => {
-    const distribution = {
-      '0-54': 0,
-      '55-64': 0,
-      '65-69': 0,
-      '70-74': 0,
-      '75-84': 0,
-      '85-89': 0,
-      '90-100': 0,
+  const calculateStatistics = (grades) => {
+    const numStudents = grades.length;
+  
+    // Calculate average grade
+    const sum = grades.reduce((total, grade) => total + grade.grade, 0);
+    const averageGrade = numStudents > 0 ? sum / numStudents : 0;
+  
+    // Calculate median grade
+    const sortedGrades = grades.map((grade) => grade.grade).sort((a, b) => a - b);
+    const middleIndex = Math.floor(numStudents / 2);
+    const medianGrade = numStudents % 2 === 0 ? (sortedGrades[middleIndex - 1] + sortedGrades[middleIndex]) / 2 : sortedGrades[middleIndex];
+  
+    // Calculate standard deviation
+    const deviations = grades.map((grade) => Math.pow(grade.grade - averageGrade, 2));
+    const variance = deviations.reduce((total, deviation) => total + deviation, 0) / numStudents;
+    const standardDeviation = Math.sqrt(variance);
+  
+    // Calculate highest and lowest grade
+    const sortedGradesCopy = [...sortedGrades];
+    const highestGrade = sortedGradesCopy.pop();
+    const lowestGrade = sortedGradesCopy.shift();
+  
+    return {
+      numStudents,
+      averageGrade,
+      medianGrade,
+      standardDeviation,
+      highestGrade,
+      lowestGrade,
     };
-
-    values.forEach((val) => {
-      if (val >= 0 && val <= 54) {
-        distribution['0-54']++;
-      } else if (val >= 55 && val <= 64) {
-        distribution['55-64']++;
-      } else if (val >= 65 && val <= 69) {
-        distribution['65-69']++;
-      } else if (val >= 70 && val <= 74) {
-        distribution['70-74']++;
-      } else if (val >= 75 && val <= 84) {
-        distribution['75-84']++;
-      } else if (val >= 85 && val <= 89) {
-        distribution['85-89']++;
-      } else if (val >= 90 && val <= 100) {
-        distribution['90-100']++;
-      }
-    });
-
-    return distribution;
   };
-
+  
+  
+  const handleStatsClick = (assignmentId) => {
+    // Find the selected grade based on assignmentId
+    const selectedGrade = filteredGrades.find((grade) => grade.assignmentId === assignmentId);
+  
+    if (selectedGrade) {
+      const statistics = calculateStatistics(filteredGrades);
+  
+      const searchParams = new URLSearchParams({
+        assignmentId: selectedGrade.assignmentId,
+        assignment: selectedGrade.assignment,
+        numStudents: statistics.numStudents,
+        averageGrade: statistics.averageGrade,
+        medianGrade: statistics.medianGrade,
+        standardDeviation: statistics.standardDeviation,
+        highestGrade: statistics.highestGrade,
+        lowestGrade: statistics.lowestGrade,
+      });
+  
+      history.push(`/stats-grades?${searchParams.toString()}`);
+    }
+  };
+  
+  
   return (
     <div>
-      <Navbar />
-      <div className='dashboard-div'>
-        <h1 className='title'>Statistics for Assignment: {assignmentId}</h1>
-        <div className='stats-div'>
-          <br />
-          {grades.length > 0 ? (
-            <>
-              <p>Number of Students: {grades.length}</p>
-              <p>Average Grade: {averageGrade}</p>
-              <p>Median Grade: {medianGrade}</p>
-              <p>Standard Deviation: {standardDeviation}</p>
-              <p>Highest Grade: {highestGrade}</p>
-              <p>Lowest Grade: {lowestGrade}</p>
-            </>
-          ) : (
-            <p>No grades available for this assignment.</p>
-          )}
-          <br />
-        </div>
-        <div className='chart-container'>
-          <canvas ref={chartRef}></canvas>
-        </div>
+      <div className='table-wrapper'>
+        <br />
+        <h2>Grades for {course}</h2>
+        {grades.length > 0 ? (
+          <table className='grade-table'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date of Submission</th>
+                <th>Type</th>
+                <th>Grade</th>
+                <th>Stats</th>
+              </tr>
+            </thead>
+            <tbody>
+              {grades.map((grade) => (
+                <tr key={grade._id}>
+                  <td>{grade.gradeType}</td>
+                  <td>{grade.gradeUploadDate}</td>
+                  <td>{grade.gradeType}</td>
+                  <td>{grade.grade}</td>
+                  <td>
+                    <Button onClick={() => handleStatsClick(grade._id, grade.gradeType)} variant='primary'>
+                      View stats
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No grades available for this course.</p>
+        )}
         <br />
         <button onClick={() => history.goBack()} className='back-button'>
           Go Back
@@ -191,4 +139,4 @@ const StatsGrades = () => {
   );
 };
 
-export default StatsGrades;
+export default StudentGrades;
