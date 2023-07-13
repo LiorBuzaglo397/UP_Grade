@@ -9,6 +9,7 @@ import StatsGrades from "./components/StatsGrades";
 import GradeDistributionPage from "./components/GradeDistributionPage";
 import TeacherDashboard from "./components/TeacherDashboard";
 import TeacherCourseGrades from "./components/TeacherCourseGrades";
+import TeacherAddNewGrades from "./components/TeacherAddNewGrades" 
 
 import { useSelector } from "react-redux";
 
@@ -33,6 +34,8 @@ function App() {
             <Route path="/GradeDistributionPage" component={GradeDistributionPage} />
             <Route path="/TeacherDashboard" component={TeacherDashboard} />
             <Route path="/TeacherCourseGrades" component={TeacherCourseGrades} />
+            <Route path="/TeacherAddNewGrades" component={TeacherAddNewGrades} />
+
 
           </Switch>
         </main>

@@ -11,9 +11,9 @@ const TeacherDashboard = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/user/getAllCourses', {
+        const response = await axios.get('http://localhost:5001/api/user/getAllCourses', {
           params: {
-            user_ID: teacherInfo.user_ID,
+            _id: teacherInfo._id,
           },
         });
         const coursesData = response.data.courses;
@@ -24,7 +24,7 @@ const TeacherDashboard = () => {
     };
 
     fetchCourses();
-  }, []);
+  }, [teacherInfo]);
 
   const handleCourseSelection = (event) => {
     setSelectedCourse(event.target.value);
@@ -32,18 +32,22 @@ const TeacherDashboard = () => {
 
   const handleViewGrades = () => {
     if (selectedCourse) {
-      const selectedCourseData = courses.find(course => course.course_ID === selectedCourse);
+      const selectedCourseData = courses.find((course) => course._id === selectedCourse);
   
-      localStorage.setItem('TeacherGradesParams', JSON.stringify({
-        user_Id: teacherInfo.user_ID,
-        courseId: selectedCourse,
+      const gradesParams = {
+        user_ID: teacherInfo.user_ID, // Change 'studentInfo' to 'teacherInfo'
+        course_ID: selectedCourseData.course_ID,
         semester_Year: selectedCourseData.semester_Year,
         semester_Num: selectedCourseData.semester_Num,
-      }));
+      };
   
-      history.push('/TeacherCoursesGrades');
+      localStorage.setItem('studentGradesParams', JSON.stringify(gradesParams));
+      localStorage.setItem('teacherInfo', JSON.stringify(teacherInfo)); // Store teacherInfo instead of studentInfo
+  
+      history.push('/TeacherCourseGrades');
     }
   };
+  
 
   return (
     <div>
@@ -51,16 +55,14 @@ const TeacherDashboard = () => {
         <h2>Teacher Dashboard</h2>
         <h3>Your Courses:</h3>
         <select value={selectedCourse} onChange={handleCourseSelection}>
-          <option value="">Select a course</option>
+          <option value=''>Select a course</option>
           {courses.map((course) => (
-            <option value={course.course_ID} key={course.course_ID}>
+            <option value={course._id} key={course._id}>
               {course.course_Name}
             </option>
           ))}
         </select>
-        {selectedCourse && (
-          <button onClick={handleViewGrades}>View Grades</button>
-        )}
+        {selectedCourse && <button onClick={handleViewGrades}>View Grades</button>}
       </div>
     </div>
   );

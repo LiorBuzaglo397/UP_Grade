@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import Logo from './images/Logo.png';
 import { useSelector } from 'react-redux';
+import Navbar from './Navbar';
 
 function Header() {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);

@@ -21,8 +21,8 @@ app.use("/api/grade", gradeRouter);
 
 mongoose
     .connect("mongodb+srv://LiorBuzaglo:Ll18061996@cluster1.ybcsdrv.mongodb.net/UP_Grade?retryWrites=true&w=majority")
-    .then(() => app.listen(5000))
-    .then(() => console.log("Connected to Database and listening on port 5000"))
+    .then(() => app.listen(5001))
+    .then(() => console.log("Connected to Database and listening on port 5001"))
     .catch((err) => console.log(err));
 
     

@@ -94,7 +94,10 @@ export const getAllCourses = async (req, res, next) => {
     }
 
     // Retrieve the user's courses
-    const courses = user.courses;
+    const courseIds = user.courses; // Assuming user.courses is an array of ObjectId strings
+
+    // Find all courses with the given IDs
+    const courses = await Courses.find({ _id: { $in: courseIds } });
 
     console.log(courses);
 
@@ -107,11 +110,11 @@ export const getAllCourses = async (req, res, next) => {
 
 
 
-export const addCourseToStudent = async (req, res, next) => {
-  const { studentId, _id } = req.body;
+export const addCourseToUser = async (req, res, next) => {
+  const { _id, coureseID } = req.body;
 
   try {
-    const user = await User.findOne({ studentId: studentId });
+    const user = await User.findById(_id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -122,11 +125,11 @@ export const addCourseToStudent = async (req, res, next) => {
     }
 
     // Check if the course ID already exists in the user's courses array
-    if (user.courses.includes(_id)) {
+    if (user.courses.includes(coureseID)) {
       return res.status(400).json({ message: "Course already added to user" });
     }
 
-    user.courses.push(_id);
+    user.courses.push(coureseID);
     await user.save();
 
     return res.status(200).json({ message: "Course added to user successfully" });

@@ -21,8 +21,8 @@ export const getAllGrades = async (req, res, next) => {
 
 export const addGrade = async (req, res, next) => {
   const {
-    user_Id,
-    courseId,
+    user_ID,
+    course_ID,
     semester_Year,
     semester_Num,
     gradeType,
@@ -33,8 +33,8 @@ export const addGrade = async (req, res, next) => {
 
 
   const graded = new Grade({
-    user_Id,
-    courseId,
+    user_ID,
+    course_ID,
     semester_Year,
     semester_Num,
     gradeType,
@@ -53,16 +53,17 @@ export const addGrade = async (req, res, next) => {
 };
 
 export const getGradesByStudentID = async (req, res, next) => {
-  const user_Id = req.params.user_Id;
+  const user_ID = req.params.user_Id;
   try {
-    const userExists = await User.exists({ user_Id });
+    const userExists = await User.exists({ user_ID });
     if (!userExists) {
       return res.status(404).json({ message: "User not found" });
     }
-    const grades = await Grade.find({ user_Id: mongoose.Types.ObjectId(user_Id) });
+    const grades = await Grade.find({ user_ID: mongoose.Types.ObjectId(user_Id) });
     if (grades.length === 0) {
       return res.status(404).json({ message: "No grades found" });
     }
+    console.log(grades);
     return res.status(200).json({ grades });
   } catch (err) {
     console.log(err);
@@ -71,12 +72,19 @@ export const getGradesByStudentID = async (req, res, next) => {
 };
 
 export const getGradesByCourseIDForTeacher = async (req, res, next) => {
-  const courseId = req.params.courseId;
+  const { course_ID, semester_Year, semester_Num } = req.query;
+  
   try {
-    const grades = await Grade.find({ courseId: mongoose.Types.ObjectId(courseId) });
+    const grades = await Grade.find({
+      course_ID,
+      semester_Year,
+      semester_Num
+    });
+    console.log(grades);
     if (grades.length === 0) {
       return res.status(404).json({ message: "No grades found" });
     }
+    console.log(grades);
     return res.status(200).json({ grades });
   } catch (err) {
     console.log(err);
@@ -85,21 +93,22 @@ export const getGradesByCourseIDForTeacher = async (req, res, next) => {
 };
 
 export const getGradesByCourseIDForStudent = async (req, res, next) => {
-  const { user_Id, courseId, semester_Year, semester_Num } = req.query;
+  const { user_ID, course_ID, semester_Year, semester_Num } = req.query;
 
   try {
-    const userExists = await User.find({ user_Id: user_Id });
+    const userExists = await User.find({ user_ID: user_ID });
     if (!userExists) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(user_Id);
+    console.log(user_ID);
 
     const grades = await Grade.find({
-      user_Id,
-      courseId,
+      user_ID,
+      course_ID,
       semester_Year,
       semester_Num
     });
+    console.log(grades);
 
     if (grades.length === 0) {
       return res.status(404).json({ message: "No grades found" });

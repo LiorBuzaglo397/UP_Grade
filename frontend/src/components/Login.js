@@ -22,12 +22,13 @@ const Login = () => {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/api/user/login', {
+      const res = await axios.post('http://localhost:5001/api/user/login', {
         email: inputs.email,
         user_Password: inputs.user_Password,
       });
 
       const data = res?.data || null;
+      console.log(data);
       return data;
     } catch (error) {
       console.error(error);

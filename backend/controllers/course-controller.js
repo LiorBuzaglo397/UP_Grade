@@ -33,7 +33,7 @@ export const addCourse = async( req , res , next) =>{
 };
 
 export const addStudentToCourse = async( req , res , next) =>{
-    const {studentId , course_ID ,semester_Year, semester_Num } = req.body;
+    const {user_ID , course_ID ,semester_Year, semester_Num } = req.body;
 
     try {
       const course = await Courses.findOne({ course_ID: course_ID, semester_Year: semester_Year , semester_Num: semester_Num });
@@ -42,7 +42,7 @@ export const addStudentToCourse = async( req , res , next) =>{
         return res.status(404).json({ message: "No course found for the specified year and semester." });
       }
       
-      course.student_List.push(studentId);
+      course.student_List.push(user_ID);
       await course.save();
       
       return res.status(200).json({ message: "Student added to the course successfully." });
@@ -52,7 +52,7 @@ export const addStudentToCourse = async( req , res , next) =>{
     }
   };
   export const addTeacherToCourse = async (req, res, next) => {
-    const {teacherId , course_ID ,semester_Year, semester_Num } = req.body;
+    const {user_ID , course_ID ,semester_Year, semester_Num } = req.body;
 
     try {
       const course = await Courses.findOne({ course_ID: course_ID, semester_Year: semester_Year , semester_Num: semester_Num });
@@ -62,7 +62,7 @@ export const addStudentToCourse = async( req , res , next) =>{
       }
 
       //need to add a chacking if theid is already inside
-      course.teacher_List.push(teacherId);
+      course.teacher_List.push(user_ID);
       await course.save();
       
       return res.status(200).json({ message: "Teacher added to the course successfully." });
@@ -73,7 +73,7 @@ export const addStudentToCourse = async( req , res , next) =>{
   };
 
   export const getCoursebyObjectID = async (req, res, next) => {
-    const { year, semester,course_ID ,teacherId } = req.body;
+    const { year, semester,course_ID ,user_ID } = req.body;
     
     try {
       const course = await Courses.findOne({ year: year, semester: semester , course_ID :course_ID });
@@ -82,7 +82,7 @@ export const addStudentToCourse = async( req , res , next) =>{
         return res.status(404).json({ message: "No course found for the specified year and semester." });
       }
       
-      course.teacher_List.push(teacherId);
+      course.teacher_List.push(user_ID);
       await course.save();
       
       return res.status(200).json({ message: "Teacher added to the course successfully." });

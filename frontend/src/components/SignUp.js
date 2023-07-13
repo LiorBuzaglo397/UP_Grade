@@ -66,7 +66,7 @@ const Signup = () => {
 
   const sendRequest = async (signupData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/user/signup', signupData);
+      const response = await axios.post('http://localhost:5001/api/user/signup', signupData);
       return response.data;
     } catch (error) {
       console.error(error);

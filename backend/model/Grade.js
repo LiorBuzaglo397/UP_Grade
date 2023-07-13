@@ -7,11 +7,11 @@ const gradeSchema = new Schema({
       type: Schema.Types.ObjectId,
       auto: true,
     },
-    user_Id: {
+    user_ID: {
       type: String,
       required: true,
     },
-    courseId: {
+    course_ID: {
       type: String,
       required: true,
     },

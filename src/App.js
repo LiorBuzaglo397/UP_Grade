@@ -19,10 +19,7 @@ import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Alert from 'react-bootstrap/Alert';
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
-<<<<<<< HEAD
 
-
-=======
 import StatsGrades from './StatsGrades';
 <link
   rel="stylesheet"
@@ -30,7 +27,6 @@ import StatsGrades from './StatsGrades';
   integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
   crossorigin="anonymous"
 />
->>>>>>> origin/main
 
 
 const App = () => {
