@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from './Navbar';
+import { useHistory } from 'react-router-dom';
+
 
 const TeacherAddGradesWithFile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const history = useHistory();
+
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -32,12 +37,20 @@ const TeacherAddGradesWithFile = () => {
   };
 
   return (
-    <div className='table-wrapper'>
+    <div>      
+      <Navbar />
+    <div className='dashboard-div'>
       <h1>File Upload</h1>
+      <br/>
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
+      <br/>
+      <button onClick={handleUpload} className='buttons'>Upload</button>
+          <button onClick={() => history.goBack()} className='back-button'>
+            Go Back
+          </button>
       {uploadProgress > 0 && <p>Upload Progress: {uploadProgress}%</p>}
-    </div>
+    </div> 
+       </div>
   );
 };
 

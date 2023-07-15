@@ -3,10 +3,15 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const gradeSchema = new Schema({
-    _id: {
-      type: Schema.Types.ObjectId,
-      auto: true,
-    },
+  _id: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+  },
+  Assingment_Name: {
+    type: String,
+    required: true,
+  },
+  // Rest of the fields...
     user_ID: {
       type: String,
       required: true,

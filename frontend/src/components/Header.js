@@ -18,21 +18,15 @@ function Header() {
   };
 
   return (
-    <div className='dashboard-div'>
+    <div>
       <br />
       <img className='dashboard-img' src={Logo} alt='logo' />
       <h1>Welcome to UP-GRADE Website</h1>
       <br />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
             <div className='button-container'>
               <button className='header-button' onClick={handleLoginClick}>Login</button>
               <button className='header-button' onClick={handleSignupClick}>Signup</button>
             </div>
-          </Route>
-        </Switch>
-      </Router>
     </div>
   );
 }

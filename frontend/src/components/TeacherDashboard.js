@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
+
 
 const TeacherDashboard = () => {
-  const teacherInfo = JSON.parse(localStorage.getItem('teacherInfo'));
+  const teacherInfo = JSON.parse(localStorage.getItem('userInfo'));
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const history = useHistory(); // Access the history object
+  const [newlyAddedRows, setNewlyAddedRows] = useState([]);
+
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -26,44 +31,41 @@ const TeacherDashboard = () => {
     fetchCourses();
   }, [teacherInfo]);
 
-  const handleCourseSelection = (event) => {
-    setSelectedCourse(event.target.value);
-  };
+  const handleCourseSelection = (_id, course_Name) => {
+    setSelectedCourse();
+    const selectedCourse = courses.filter((course) => course._id === _id)[0];
 
-  const handleViewGrades = () => {
-    if (selectedCourse) {
-      const selectedCourseData = courses.find((course) => course._id === selectedCourse);
-  
-      const gradesParams = {
-        user_ID: teacherInfo.user_ID, // Change 'studentInfo' to 'teacherInfo'
-        course_ID: selectedCourseData.course_ID,
-        semester_Year: selectedCourseData.semester_Year,
-        semester_Num: selectedCourseData.semester_Num,
-      };
-  
-      localStorage.setItem('studentGradesParams', JSON.stringify(gradesParams));
-      localStorage.setItem('teacherInfo', JSON.stringify(teacherInfo)); // Store teacherInfo instead of studentInfo
-  
-      history.push('/TeacherCourseGrades');
-    }
+    
+    console.log(courses._id);
+    localStorage.setItem('courseID', JSON.stringify(courses._id));
+    localStorage.setItem('selectedCourse', JSON.stringify(selectedCourse));
+
+
+
+    
   };
-  
 
   return (
     <div>
+      <Navbar/>
       <div className='dashboard-div'>
-        <h2>Teacher Dashboard</h2>
-        <h3>Your Courses:</h3>
-        <select value={selectedCourse} onChange={handleCourseSelection}>
-          <option value=''>Select a course</option>
-          {courses.map((course) => (
-            <option value={course._id} key={course._id}>
-              {course.course_Name}
-            </option>
+      <h2>Teacher Dashboard</h2>
+      <h3>Your Courses:</h3>
+      <ul >
+      {courses.map((course) => (
+        
+      <Link
+        to={`/teacher-grades/${course._id}/${course.course_Name}`}
+        key={course._id}
+        onClick={() => handleCourseSelection(course._id, course.course_Name)}
+      >
+        <button>
+          {course.course_Name}
+        </button>
+      </Link>
+
           ))}
-        </select>
-        {selectedCourse && <button onClick={handleViewGrades}>View Grades</button>}
-      </div>
+      </ul></div>
     </div>
   );
 };

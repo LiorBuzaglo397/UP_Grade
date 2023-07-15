@@ -7,9 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   color: white;
-  /*display: flex;
-  justify-content: center;
-  align-items: center; */
   background-image: url('./images/Background.jpg');
   background-size: cover;
   background-position: center center;
@@ -121,14 +118,28 @@ button {
   cursor: pointer;
 }
 
+.buttons {
+  padding: 10px;
+  background-color: #b675bc;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 0 auto;
+  margin-right: 2%;
+  font-weight: 500;
+}
+
 .back-button {
   padding: 15px;
-  background-color: #b675bc;
+  background-color: #9143b1;
   color: #ffffff;
   border: 1px solid #ffffff;
   border-radius: 15px;
   cursor: pointer;
   margin-left: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 img {
@@ -271,17 +282,69 @@ nav a:hover{
 
 /* Table Styles */
 
-.table-wrapper{
+.table-wrapper {
+  background-color: #381f63;
   background-color: rgba(56, 31, 99, .8);
   width: 80%;
   margin: 80px auto;
-  text-align: center; 
+  text-align: center;
+  position: relative;
 }
+
 .table-wrapper h2{
   color: #b675bc;
   font-weight: 900;
   font-style: italic;
 }
+/*assignment-table design*/
+
+.assignment-table {
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: normal;
+  border: none;
+  border-collapse: collapse;
+  white-space: nowrap;
+  background-color: #e9c4f8;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+.assignment-table td, .assignment-table th {
+  text-align: center;
+  padding: 10px;
+  width: 5%;
+}
+
+.assignment-table td {
+  font-size: 16px;
+  color:#381f63;
+}
+
+.assignment-table thead th {
+  color: #ffffff;
+  background: #9143b1;
+}
+
+
+.assignment-table thead th:nth-child(odd) {
+  color: #ffffff;
+  background: #400d75;
+}
+
+.assignment-table tr:nth-child(even) {
+  background: #F8F8F8;
+}
+
+.assignment-table input,.assignment-table select {
+  color: black;
+  background: #ffffff;
+  text-align: center;
+}
+
+/*grade-table design*/
 
 .grade-table {
   border-radius: 5px;
@@ -290,11 +353,12 @@ nav a:hover{
   border: none;
   border-collapse: collapse;
   width: 80%;
-  max-width: 600px;
   white-space: nowrap;
   background-color: #e9c4f8;
   margin-top: 5%;
-  margin-left: 25%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 5%;
 }
 
 .grade-table td, .grade-table th {
@@ -323,20 +387,19 @@ nav a:hover{
   background: #F8F8F8;
 }
 
-.grade-table input,select {
-  color: white;
-  background: #c064e5;
-  text-align: center;
-}
-
 /* Responsive */
 
-@media (max-width: 767px) {
+@media (max-width: 950px) {
   .grade-table {
       display: block;
-      width: 80%;
-      margin-left: 10%;
+      width: 70%;
+      margin-left: 15%;
   }
+  .assignment-table {
+    display: block;
+    width: 80%;
+    margin-left: 10%;
+}
   .table-wrapper:before{
       display: block;
       text-align: right;
@@ -393,8 +456,136 @@ nav a:hover{
       display: block;
       text-align: center;
   }
+
+ .grade-table thead, .grade-table tbody, .grade-table thead th {
+      display: block;
+  }
+  .grade-table thead th:last-child{
+      border-bottom: none;
+  }
+  .grade-table thead {
+      float: left;
+  }
+  .grade-table tbody {
+      width: auto;
+      position: relative;
+      overflow-x: auto;
+  }
+  .grade-table td, .grade-table th {
+      padding: 20px .625em .625em .625em;
+      height: 60px;
+      vertical-align: middle;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: auto;
+      width: 150px;
+      font-size: 12px;
+      text-overflow: ellipsis;
+  }
+  .grade-table thead th {
+      text-align: left;
+      border-bottom: 1px solid #f7f7f9;
+  }
+  .grade-table tbody tr {
+      display: table-cell;
+  }
+  .grade-table tbody tr:nth-child(odd) {
+      background: none;
+  }
+  .grade-table tr:nth-child(even) {
+      background: transparent;
+  }
+  .grade-table tr td:nth-child(odd) {
+      background: #e9c4f8;
+      border-right: 1px solid #E6E4E4;
+  }
+  .grade-table tr td:nth-child(even) {
+      border-right: 1px solid #E6E4E4;
+  }
+  .grade-table tbody td {
+      display: block;
+      text-align: center;
+  }
+ 
+  .assignment-table thead, .assignment-table tbody, .assignment-table thead th {
+    display: block;
+}
+.assignment-table thead th:last-child{
+    border-bottom: none;
+}
+.assignment-table thead {
+    float: left;
+}
+.assignment-table tbody {
+    width: auto;
+    position: relative;
+    overflow-x: auto;
+}
+.assignment-table td, .assignment-table th {
+    padding: 20px .625em .625em .625em;
+    height: 60px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 150px;
+    font-size: 14px;
+    text-overflow: ellipsis;
+}
+.assignment-table thead th {
+    text-align: left;
+    border-bottom: 1px solid #f7f7f9;
+}
+.assignment-table tbody tr {
+    display: table-cell;
+}
+.assignment-table tbody tr:nth-child(odd) {
+    background: none;
+}
+.assignment-table tr:nth-child(even) {
+    background: transparent;
+}
+.assignment-table tr td:nth-child(odd) {
+    background: #e9c4f8;
+    border-right: 1px solid #E6E4E4;
+}
+.assignment-table tr td:nth-child(even) {
+    border-right: 1px solid #E6E4E4;
+}
+.assignment-table tbody td {
+    display: block;
+    text-align: center;
 }
 
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 

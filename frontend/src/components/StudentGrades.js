@@ -2,42 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Navbar from './Navbar';
 
 const StudentGrades = () => {
-  const { course_ID, semester_Year, semester_Num } = JSON.parse(localStorage.getItem('studentGradesParams'));
-  const studentInfo = JSON.parse(localStorage.getItem('studentInfo'));
+  //const { course_ID, semester_Year, semester_Num } = JSON.parse(localStorage.getItem('studentGradesParams'));
+  const studentInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const selectedCourse = JSON.parse(localStorage.getItem('selectedCourse'));
 
-  const CourseInfo = {
-    course_ID,
-    semester_Year,
-    semester_Num,
-  };
 
   const [grades, setGrades] = useState([]);
-  const { course } = useParams();
+  const { course_ID, semester_Year, semester_Num ,course_Name } = useParams();
   const history = useHistory();
   const [filteredGrades, setFilteredGrades] = useState([]);
+  //setCourses
+  const [csourses, setCourses] = useState([]);
+
 
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/grade/getGradesByCourseIDForStudent?user_ID=${studentInfo.user_ID}&course_ID=${CourseInfo.course_ID}&semester_Year=${CourseInfo.semester_Year}&semester_Num=${CourseInfo.semester_Num}`);
-        console.log(response.data);
-        setGrades(response.data.grades);
+        const response = await axios.get(`http://localhost:5001/api/grade/getGradesByCourseIDForStudent?user_ID=${studentInfo.user_ID}&course_ID=${course_ID}&semester_Year=${semester_Year}&semester_Num=${semester_Num}`);
+        console.log(response.data.grades);
+        const gradesData = response.data.grades;
+        setGrades(gradesData);
+        // Fetch assignment details for each grade
       } catch (error) {
         console.error('Error fetching grades:', error);
       }
     };
-
+  
     fetchGrades();
-  }, [CourseInfo.course_ID, CourseInfo.semester_Num, CourseInfo.semester_Year, studentInfo.user_ID]);
+  }, [course_ID, semester_Num, semester_Year, studentInfo.user_ID]);
 
   useEffect(() => {
     if (Array.isArray(grades)) {
-      const filtered = grades.filter((grade) => grade.course_ID === course);
+      const filtered = grades.filter((grade) => grade.course_ID === course_ID);
       setFilteredGrades(filtered);
     }
-  }, [grades, course]);
+  }, [grades, course_ID]);
 
   const calculateStatistics = (grades) => {
     const numStudents = grades.length;
@@ -72,70 +74,85 @@ const StudentGrades = () => {
   };
   
   
-  const handleStatsClick = (assignmentId) => {
-    // Find the selected grade based on assignmentId
-    const selectedGrade = filteredGrades.find((grade) => grade.assignmentId === assignmentId);
-  
-    if (selectedGrade) {
-      const statistics = calculateStatistics(filteredGrades);
-  
-      const searchParams = new URLSearchParams({
-        assignmentId: selectedGrade.assignmentId,
-        assignment: selectedGrade.assignment,
-        numStudents: statistics.numStudents,
-        averageGrade: statistics.averageGrade,
-        medianGrade: statistics.medianGrade,
-        standardDeviation: statistics.standardDeviation,
-        highestGrade: statistics.highestGrade,
-        lowestGrade: statistics.lowestGrade,
+  const handleStatsClick = async (assignmentId, assignmentName) => {
+    try {
+      const response = await axios.get('http://localhost:5001/api/grade/getGradesByCourseID', {
+        params: {
+          Assingment_Name: assignmentName,
+          course_ID,
+          semester_Year,
+          semester_Num
+        }
       });
   
-      history.push(`/stats-grades?${searchParams.toString()}`);
+      const grades = response.data.grades;
+  
+      // Perform any necessary calculations or data manipulation
+      const statistics = calculateStatistics(grades);
+
+      const listOfgrades = grades.map((grade) => grade.grade);
+      console.log(typeof listOfgrades);
+      console.log(Array.isArray(grades));
+
+      //localStorage.setItem('grades', JSON.stringify(listOfgrades));
+
+      // Redirect to the stats page with the calculated statistics and the listOfgrades
+      history.push(`/stats?assignmentId=${assignmentId}&assignment=${assignmentName}&numStudents=${statistics.numStudents}&averageGrade=${statistics.averageGrade}&medianGrade=${statistics.medianGrade}&standardDeviation=${statistics.standardDeviation}&highestGrade=${statistics.highestGrade}&lowestGrade=${statistics.lowestGrade}&listOfgrades=${listOfgrades}`);
+      
+    } catch (error) {
+      console.error('Error fetching grades:', error);
+      // Handle the error appropriately
     }
   };
+
+  // Function to calculate standard deviation
+  const calculateStandardDeviation = (gradesList) => {
+    const mean = gradesList.reduce((a, b) => a + b, 0) / gradesList.length;
+    const squaredDifferences = gradesList.map((grade) => (grade - mean) ** 2);
+    const variance = squaredDifferences.reduce((a, b) => a + b, 0) / squaredDifferences.length;
+    return Math.sqrt(variance);
+  };
+
   
   
   return (
     <div>
-      <div className='table-wrapper'>
-        <br />
-        <h2>Grades for {course}</h2>
-        {grades.length > 0 ? (
-          <table className='grade-table'>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date of Submission</th>
-                <th>Type</th>
-                <th>Grade</th>
-                <th>Stats</th>
-              </tr>
-            </thead>
-            <tbody>
-              {grades.map((grade) => (
-                <tr key={grade._id}>
-                  <td>{grade.gradeType}</td>
-                  <td>{grade.gradeUploadDate}</td>
-                  <td>{grade.gradeType}</td>
-                  <td>{grade.grade}</td>
-                  <td>
-                    <Button onClick={() => handleStatsClick(grade._id, grade.gradeType)} variant='primary'>
-                      View stats
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No grades available for this course.</p>
-        )}
-        <br />
-        <button onClick={() => history.goBack()} className='back-button'>
-          Go Back
-        </button>
-      </div>
+    <Navbar />
+    <div className='table-wrapper'>
+      <br></br>
+      <h2>Grades for {course_Name}</h2>
+      {filteredGrades.map((grade) => (
+        <table key={grade.id} className='grade-table'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date of Submission</th>
+              <th>Type</th>
+              <th>Grade</th>
+              <th>Stats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{grade.Assingment_Name}</td>
+              <td>{grade.gradeUploadDate}</td>
+              <td>{grade.gradeType}</td>
+              <td>{grade.grade}</td>
+              <td>
+                <Button onClick={() => handleStatsClick(grade.id,grade.Assingment_Name)} variant='primary'>
+                  View stats
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      ))}
+      <br></br>
+      <button onClick={() => history.goBack()} className='back-button'>
+        Go Back
+      </button>
     </div>
+  </div>
   );
 };
 

@@ -35,6 +35,7 @@ export const addGradeWithFile = async (req, res, next) => {
 
     // Assuming the Excel sheet has the same field names as the grade model
     const grades = sheetData.map((row) => ({
+      Assingment_Name : row.Assingment_Name,
       user_ID: row.user_ID,
       course_ID: row.course_ID,
       semester_Year: row.semester_Year,
@@ -56,6 +57,7 @@ export const addGradeWithFile = async (req, res, next) => {
 
 export const addGrade = async (req, res, next) => {
   const {
+    Assingment_Name,
     user_ID,
     course_ID,
     semester_Year,
@@ -68,6 +70,7 @@ export const addGrade = async (req, res, next) => {
 
 
   const graded = new Grade({
+    Assingment_Name,
     user_ID,
     course_ID,
     semester_Year,
@@ -87,24 +90,7 @@ export const addGrade = async (req, res, next) => {
   }
 };
 
-export const getGradesByStudentID = async (req, res, next) => {
-  const user_ID = req.params.user_Id;
-  try {
-    const userExists = await User.exists({ user_ID });
-    if (!userExists) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const grades = await Grade.find({ user_ID: mongoose.Types.ObjectId(user_ID) });
-    if (grades.length === 0) {
-      return res.status(404).json({ message: "No grades found" });
-    }
-    console.log(grades);
-    return res.status(200).json({ grades });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
+
 
 export const getGradesByCourseIDForTeacher = async (req, res, next) => {
   const { course_ID, semester_Year, semester_Num } = req.query;
@@ -161,5 +147,30 @@ export const getGradesByCourseIDForStudent = async (req, res, next) => {
   }
 };
 
+export const getGradesByCourseID = async (req, res, next) => {
+  const { Assingment_Name, course_ID, semester_Year, semester_Num } = req.query;
 
-  
+try{
+    const grades = await Grade.find({
+      Assingment_Name,
+      course_ID,
+      semester_Year,
+      semester_Num
+    });
+    console.log(grades);
+
+    if (grades.length === 0) {
+      return res.status(404).json({ message: "No grades found" });
+    }
+
+    //const prageMap = new Map();
+    //for (const grade in grades) {
+     // prageMap.set(user_Id, grades[grade]);
+   // }
+
+    return res.status(200).json({ grades });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

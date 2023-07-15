@@ -44,6 +44,12 @@ const courseSchema = new Schema ({
           ref: 'User',
         },
       ],
+      assignment_List: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Assigment',
+        },
+      ],
 });
 
 courseSchema.index({ course_ID: 1, semester_Year: 1, semester_Num: 1 }, { unique: true });

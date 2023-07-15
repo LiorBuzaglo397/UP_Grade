@@ -1,7 +1,6 @@
 import User from "../model/User.js";
 import brcypt from 'bcryptjs' ;
 import Courses from "../model/Courses.js";
-import { ObjectId } from 'mongodb';
 
 
 export const getAllUser = async(req ,res , next ) =>{
