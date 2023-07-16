@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Logo from './images/Logo.png';
+import { Link } from 'react-router-dom';
 
 const Login = ({ handleLogin }) => {
   const [username, setUsername] = useState('');
@@ -37,6 +38,10 @@ const Login = ({ handleLogin }) => {
             onChange={handlePasswordChange}
           />
           <button type="submit">Login</button>
+          <br/><br/>
+          <label className='label-link'>Do you want to Sign Up? 
+           <Link to="/signup"> Click here</Link>
+          </label>
         </form>
       </div>
     </div>

@@ -6,18 +6,13 @@ import TeacherDashboard from './TeacherDashboard';
 import Login from './Login';
 import StudentGrades from './StudentGrades';
 import TeacherCourseGrades from './TeacherCourseGrades';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import Logo from './images/Logo.png';
+import StatsGrades from './StatsGrades';
 
 /*****  bootstrap ******/
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Accordion from 'react-bootstrap/Accordion';
-import Alert from 'react-bootstrap/Alert';
-import ThemeProvider from 'react-bootstrap/ThemeProvider'
-import StatsGrades from './StatsGrades';
+
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -27,8 +22,12 @@ import StatsGrades from './StatsGrades';
 
 
 const App = () => {
+  const history = useHistory();
   const [loggedIn, setLoggedIn] = useState(false);
   const [userType, setUserType] = useState('');
+  const [semester, setSemester] = useState('');
+  const [year, setYear] = useState('');
+  
 
   const handleLogin = (username, password) => {
     // Perform login validation
@@ -51,13 +50,21 @@ const App = () => {
 
   const renderUserForm = () => {
     if (userType === 'student') {
-      return <StudentDashboard />;
+      window.location.href= "/student-dashboard";
     } else if (userType === 'teacher') {
-      return <TeacherDashboard />;
+      window.location.href= "/teacher-dashboard";
     }
-
     return null;
   };
+
+  const handleSemesterChange = (event) => {
+    setSemester(event.target.value);
+  };
+  
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+  
 
   return (
     <Router>
@@ -71,21 +78,35 @@ const App = () => {
                   <br></br>
                   <img className='dashboard-img' src={Logo} alt="logo" />
                   <h1>Welcome to UP-GRADE Website</h1><br></br>
-                  <button onClick={handleLogout}>Logout</button><br></br>
+                  <br/>
                   <label>
-                    User Type:
-                    <select value={userType} onChange={handleUserTypeChange}>
-                      <option value="">Select User Type</option>
-                      <option value="student">Student</option>
-                      <option value="teacher">Teacher</option>
-                    </select>
-                  </label>
-                  {renderUserForm()}
+                  Select Semester: 
+                  <select value={semester} onChange={handleSemesterChange}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </label>
+                <br/><br/>
+                <label>
+                Select Year: 
+                  <select value={year} onChange={handleYearChange}>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                  </select>
+                </label>
+                <br/>
+                <br/>
+                <button onClick={renderUserForm} className='buttons'> Done </button>
+                <br/>
+                <br/>
                 </div>
                 </div>
+                
             ) : (
               <Login handleLogin={handleLogin} />
-            )}
+        )}
           </Route>
           <Route path="/student-grades/:course">
             <StudentGrades />
@@ -93,10 +114,10 @@ const App = () => {
           <Route path="/teacher-grades/:course">
             <TeacherCourseGrades />
           </Route>
-          <Route path="/student-dashboard">
+          <Route exact path="/student-dashboard">
             <StudentDashboard />
           </Route>
-          <Route path="/teacher-dashboard">
+          <Route exact path="/teacher-dashboard">
             <TeacherDashboard />
           </Route>
           <Route path="/stats">

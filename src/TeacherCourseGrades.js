@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useHistory } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+
 
 const TeacherCourseGrades = () => {
 
@@ -127,7 +129,7 @@ const { course } = useParams();
         <Navbar /> 
         <div className='table-wrapper'>
         <h2>Teacher { course } Course Assignments</h2>
-        <table className='grade-table'>
+        <table className='assignment-table'>
             <thead>
             <tr>
                 <th>Course</th>
@@ -168,17 +170,16 @@ const { course } = useParams();
                     </select>
                 </td>
                 <td>
-                    <button on onClick={() => uploadStudentsGrades(assignment.course)}>Upload grades</button>
+                    <button on onClick={() => uploadStudentsGrades(assignment.course)} className='buttons'>Upload grades</button>
                 </td>
                 </tr>
             ))}
             </tbody>
         </table>
-        <button onClick={handleAddAssignment}>New Assignment</button>
-        <button onClick={handleSave}>Save</button>
-
-        <button onClick={() => history.goBack()} className='back-button'>Go Back</button>
-        
+        <button onClick={handleAddAssignment} className='buttons'>New Assignment</button>
+        <button onClick={handleSave} className='buttons'>Save</button>
+        <br></br>
+        <button onClick={() => history.goBack()} className='back-button'>Go Back</button>        
         </div>
     </div>
     
