@@ -66,7 +66,6 @@ console.log(course_Name);
       localStorage.setItem('selectedCourse', JSON.stringify(selectedCourse));
 
       window.alert('Assignments saved successfully');
-      history.push('/teacher-dashboard');
     } catch (error) {
       console.error('Error saving assignments:', error);
       window.alert('Error saving assignments');
