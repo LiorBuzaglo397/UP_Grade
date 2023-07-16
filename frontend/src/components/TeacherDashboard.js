@@ -15,6 +15,7 @@ const TeacherDashboard = () => {
   const searchParams = new URLSearchParams(location.search);
   const semester = searchParams.get('semester');
   const year = searchParams.get('year');
+  console.log(semester);
 
   useEffect(() => {
     const fetchCourses = async () => {

@@ -80,15 +80,17 @@ const App = () => {
                   <label>
                   Select Semester: 
                   <select value={semester} onChange={handleSemesterChange}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
+                  <option value="">Select Semester</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
                 </label>
                 <br/><br/>
                 <label>
                 Select Year: 
                   <select value={year} onChange={handleYearChange}>
+                  <option value="">Select Year</option>
                     <option value="2021">2021</option>
                     <option value="2022">2022</option>
                     <option value="2023">2023</option>

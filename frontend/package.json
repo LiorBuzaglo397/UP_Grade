@@ -27,7 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "dev": "concurrently \"npm start\" \"cd ../backend && npm start\"",
+    "dev": "concurrently \"npm start\" \"cd backend && npm start\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

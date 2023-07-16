@@ -118,7 +118,7 @@ export const addCourseToUser = async (req, res, next) => {
 
   try {
     const user = await User.findById(_id);
-
+    console.log(_id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
