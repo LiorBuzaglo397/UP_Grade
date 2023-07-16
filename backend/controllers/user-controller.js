@@ -83,7 +83,7 @@ export const login = async(req , res , next) => {
 
 
 export const getAllCourses = async (req, res, next) => {
-  const { _id } = req.query;
+  const { _id, semester_Year, semester_Num } = req.query;
 
   try {
     const user = await User.findById(_id);
@@ -95,8 +95,12 @@ export const getAllCourses = async (req, res, next) => {
     // Retrieve the user's courses
     const courseIds = user.courses; // Assuming user.courses is an array of ObjectId strings
 
-    // Find all courses with the given IDs
-    const courses = await Courses.find({ _id: { $in: courseIds } });
+    // Find all courses with the given IDs and matching semester_Year and semester_Num
+    const courses = await Courses.find({
+      _id: { $in: courseIds },
+      semester_Year,
+      semester_Num,
+    });
 
     console.log(courses);
 

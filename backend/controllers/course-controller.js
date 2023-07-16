@@ -43,7 +43,7 @@ export const addStudentToCourse = async (req, res, next) => {
       semester_Year: semester_Year,
       semester_Num: semester_Num
     });
-
+    console.log(user_ID);
     if (!course) {
       return res
         .status(404)
@@ -52,7 +52,7 @@ export const addStudentToCourse = async (req, res, next) => {
 
     // Check if the teacher is already assigned to the course
     if (course.student_List.includes(user_ID)) {
-      return res.status(400).json({ message: "Teacher is already assigned to the course." });
+      return res.status(400).json({ message: "Student is already assigned to the course." });
     }
 
     course.student_List.push(user_ID);

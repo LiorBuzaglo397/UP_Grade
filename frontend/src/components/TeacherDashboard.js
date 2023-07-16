@@ -3,22 +3,27 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
-
+import { useLocation } from 'react-router-dom';
 
 const TeacherDashboard = () => {
-  const teacherInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
-  const history = useHistory(); // Access the history object
+  const history = useHistory();
   const [newlyAddedRows, setNewlyAddedRows] = useState([]);
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const semester = searchParams.get('semester');
+  const year = searchParams.get('year');
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get('http://localhost:5001/api/user/getAllCourses', {
           params: {
-            _id: teacherInfo._id,
+            _id: userInfo._id,
+            semester_Year: year,
+            semester_Num: semester,
           },
         });
         const coursesData = response.data.courses;
@@ -29,43 +34,37 @@ const TeacherDashboard = () => {
     };
 
     fetchCourses();
-  }, [teacherInfo]);
+  }, [userInfo, semester, year]);
 
-  const handleCourseSelection = (_id, course_Name) => {
-    setSelectedCourse();
-    const selectedCourse = courses.filter((course) => course._id === _id)[0];
-
-    
-    console.log(courses._id);
-    localStorage.setItem('courseID', JSON.stringify(courses._id));
-    localStorage.setItem('selectedCourse', JSON.stringify(selectedCourse));
-
-
-
-    
+  const handleCourseSelection = (course) => {
+    localStorage.setItem('selectedCourse', JSON.stringify(course));
+    console.log(course);
   };
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className='dashboard-div'>
-      <h2>Teacher Dashboard</h2>
-      <h3>Your Courses:</h3>
-      <ul >
-      {courses.map((course) => (
-        
-      <Link
-        to={`/teacher-grades/${course._id}/${course.course_Name}`}
-        key={course._id}
-        onClick={() => handleCourseSelection(course._id, course.course_Name)}
-      >
-        <button>
-          {course.course_Name}
-        </button>
-      </Link>
-
-          ))}
-      </ul></div>
+        <h2>Teacher Dashboard</h2>
+        <h3>Your Courses:</h3>
+        <br/>
+        <ul>
+          {courses.length === 0 ? (
+            <h3>No courses available</h3>
+          ) : (
+            courses.map((course) => (
+              <Link
+                to={`/teacher-grades/${course._id}/${course.semester_Year}/${course.semester_Num}/${course.course_Name}`}
+                key={course._id}
+                onClick={() => handleCourseSelection(course)}
+              >
+                <button>{course.course_Name}</button>
+              </Link>
+            ))
+          )}
+        </ul>
+ 
+      </div>
     </div>
   );
 };

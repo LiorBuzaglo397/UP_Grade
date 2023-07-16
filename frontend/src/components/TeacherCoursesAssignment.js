@@ -10,20 +10,24 @@ Modal.setAppElement('#root'); // Set the app element for accessibility
 
 export default function TeacherCoursesAssignment() {
   const [assignments, setAssignments] = useState([]);
-  const { courseId, course } = useParams();
+  const { course_ID, semester_Year, semester_Num ,course_Name } = useParams();
   const history = useHistory();
   const [newlyAddedRows, setNewlyAddedRows] = useState([]);
   const [showModal, setShowModal] = useState(false); // State to control the modal visibility
   const [gradeUploadMethod, setGradeUploadMethod] = useState(null); // State to store the selected grade upload method
   const [selectedAssignmentId, setSelectedAssignmentId] = useState(null); // New state variable to store the selected assignment ID
   const selectedCourse = localStorage.getItem('selectedCourse');
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  
+console.log(course_Name);
 
   useEffect(() => {
     const fetchAssignment = async () => {
       try {
+        console.log(course_ID);
         const response = await axios.get('http://localhost:5001/api/assignment/getAllAssignmentByCourseID', {
           params: {
-            course_ID: courseId,
+            course_ID: course_ID ,
           },
         });
         const assignmentData = response.data.assignments;
@@ -56,7 +60,7 @@ export default function TeacherCoursesAssignment() {
       });
 
       const response = await axios.post('http://localhost:5001/api/assignment/addOrUpdateAssignment', {
-        course_ID: courseId,
+        course_ID: course_ID,
         assignments: updatedAssignments.concat(newAssignments),
       });
       localStorage.setItem('selectedCourse', JSON.stringify(selectedCourse));
@@ -100,13 +104,19 @@ export default function TeacherCoursesAssignment() {
   };
 
   const handleAddAssignment = () => {
+    if (newlyAddedRows.length > 0) {
+      window.alert('Please save or cancel the current new assignment before adding another one.');
+      return;
+    }
+  
     const newRow = {
-      course_ID: courseId,
+      course_ID: course_ID,
       assignment_Name: '',
       upload_Date: '',
       type: 'hw',
     };
-    setNewlyAddedRows((prevNewlyAddedRows) => [...prevNewlyAddedRows, newRow]);
+  
+    setNewlyAddedRows([newRow]);
     addNewAssignment(newRow);
   };
 
@@ -116,8 +126,15 @@ export default function TeacherCoursesAssignment() {
     if (selectedAssignment) {
       // Store the assignment in localStorage
       localStorage.setItem('selectedAssignment', JSON.stringify(selectedAssignment));
+      console.log(semester_Year);
       // Redirect to TeacherAddNewGrades component
-      localStorage.setItem('courseId', JSON.stringify(courseId));
+      localStorage.setItem('courseId', JSON.stringify(course_ID));
+      localStorage.setItem('course_ID', JSON.stringify(course_ID));
+      localStorage.setItem('gradeType', JSON.stringify(selectedAssignment.type));
+      localStorage.setItem('semester_Year', JSON.stringify(semester_Year));
+      localStorage.setItem('semester_Num', JSON.stringify(semester_Num));
+      localStorage.setItem('upload_Date', JSON.stringify(selectedAssignment.upload_Date));
+
       history.push('/TeacherAddNewGrades');
     }
   };
@@ -143,7 +160,7 @@ export default function TeacherCoursesAssignment() {
     <div>
       <Navbar />
       <div className='table-wrapper'>
-        <h2>Teacher {course} Course Assignments</h2>
+        <h2>Teacher {course_Name} Course Assignments</h2>
         <table className='assignment-table'>
           <thead>
             <tr>
@@ -157,7 +174,7 @@ export default function TeacherCoursesAssignment() {
           <tbody>
           {assignments.concat(newlyAddedRows).map((assignment) => (
   <tr key={assignment._id}>
-    <td>{course}</td>
+    <td>{course_Name}</td>
     <td>
       <input
         type='text'
@@ -217,6 +234,10 @@ export default function TeacherCoursesAssignment() {
           Preferred Upload Method: <strong>{gradeUploadMethod}</strong>
         </p>
       )}
+              <br/>
+          <button onClick={() => history.goBack()} className='back-button'>
+            Go Back
+          </button>
     </div>
   );
 }

@@ -5,20 +5,15 @@ import StudentDashboard from './components/StudentDashboard';
 import TeacherDashboard from './components/TeacherDashboard';
 import Login from './components/Login';
 import StudentGrades from './components/StudentGrades';
-import TeacherCourseGrades from './components/TeacherCourseGrades';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Logo from './images/Logo.png';
 import TeacherAddGradesWithFile from './components/TeacherAddGradesWithFile';
 import TeacherAddNewGrades from './components/TeacherAddNewGrades';
-import TeacherCoursesAssignment from './components/TeacherCoursesAssignment'
+import TeacherCoursesAssignment from './components/TeacherCoursesAssignment';
+import SignUp from './components/SignUp';
 /**  bootstrap ***/
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Accordion from 'react-bootstrap/Accordion';
-import Alert from 'react-bootstrap/Alert';
-import ThemeProvider from 'react-bootstrap/ThemeProvider'
+
 import StatsGrades from './components/StatsGrades';
 //TeacherAddGradesWithFile
 <link
@@ -31,8 +26,9 @@ import StatsGrades from './components/StatsGrades';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userType, setUserType] = useState('');
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const [semester, setSemester] = useState('');
+  const [year, setYear] = useState('');
 
 
   const handleLogin = (inputs) => {
@@ -44,23 +40,29 @@ const App = () => {
 
   const handleLogout = () => {
     setLoggedIn(false);
-    setUserType('');
   };
 
-  const handleUserTypeChange = (event) => {
-    setUserType(event.target.value);
-  };
+
 
   const renderUserForm = () => {
-    console.log(userInfo);
-    if (userInfo.user_Description      === "Student") {
-      return <StudentDashboard />;
-    } else if (userInfo.user_Description      === "Teacher"    ) {
-      return <TeacherDashboard />;
+    if (userInfo.user_Description === "Student") {
+      window.location.href = `/student-dashboard?semester=${semester}&year=${year}`;
+    } else if (userInfo.user_Description === "Teacher") {
+      window.location.href = `/teacher-dashboard?semester=${semester}&year=${year}`;
     }
-
+  
     return null;
   };
+  
+
+  const handleSemesterChange = (event) => {
+    setSemester(event.target.value);
+  };
+  
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+
 
   return (
     <Router>
@@ -74,18 +76,41 @@ const App = () => {
                   <br></br>
                   <img className='dashboard-img' src={Logo} alt="logo" />
                   <h1>Welcome to UP-GRADE Website</h1><br></br>
-                  {renderUserForm()}
-
+                  <br/>
+                  <label>
+                  Select Semester: 
+                  <select value={semester} onChange={handleSemesterChange}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </label>
+                <br/><br/>
+                <label>
+                Select Year: 
+                  <select value={year} onChange={handleYearChange}>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                  </select>
+                </label>
+                <br/>
+                <br/>
+                <button onClick={renderUserForm} className='buttons'> Done </button>
+                <br/>
+                <br/>
                 </div>
                 </div>
+                
             ) : (
+
               <Login handleLogin={handleLogin} />
             )}
           </Route>
           <Route path="/student-grades/:course_ID/:semester_Year/:semester_Num/:course_Name" >
             <StudentGrades />
           </Route>
-          <Route path="/teacher-grades/:course">
+          <Route path="/teacher-grades/:course_ID/:semester_Year/:semester_Num/:course_Name">
             <TeacherCoursesAssignment />
           </Route>
           <Route path="/student-dashboard">
@@ -102,6 +127,9 @@ const App = () => {
           </Route>
           <Route path="/TeacherAddGradesWithFile">
             <TeacherAddGradesWithFile/>
+          </Route>
+          <Route path="/signup">
+            <SignUp/>
           </Route>
         </Switch>
       </div>

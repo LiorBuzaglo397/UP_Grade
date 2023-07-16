@@ -15,6 +15,16 @@ const TeacherAddNewGrades = () => {
   //selectedCourse
   const selectedCourse = localStorage.getItem('selectedCourse');
 
+  const course_ID = localStorage.getItem('course_ID');
+  const semester_Year = localStorage.getItem('semester_Year');
+  const semester_Num = localStorage.getItem('semester_Num');
+  const gradeType = localStorage.getItem('gradeType');
+  const gradeTypeNum = localStorage.getItem('gradeTypeNum');
+  const upload_Date = localStorage.getItem('upload_Date');
+
+  //upload_Date
+console.log(semester_Num);
+
 
   useEffect(() => {
     const selectedAssignment = localStorage.getItem('selectedAssignment');
@@ -53,7 +63,6 @@ const TeacherAddNewGrades = () => {
     });
     setStudentInfo(updatedStudentInfo);
   };
-
   useEffect(() => {
     const isAllGradesEntered = studentInfo.every((student) => student.grade !== '');
     setIsSubmitDisabled(!isAllGradesEntered);
@@ -69,37 +78,33 @@ const TeacherAddNewGrades = () => {
   
         const {
           _id: studentId,
-          course_ID,
-          semester_Year,
-          semester_Num,
-          gradeType,
-          gradeTypeNum,
           grade,
-          gradeUploadDate,
         } = student;
   
         await axios.post('http://localhost:5001/api/grade/add', {
-          Assingment_Name: assignmentName,
+          Assingment_Name : assignmentName,
           user_ID: studentId,
-          course_ID: course_ID, // Add course_ID field
-          semester_Year: semester_Year, // Add semester_Year field
-          semester_Num: semester_Num, // Add semester_Num field
-          gradeType: gradeType,
-          gradeTypeNum: gradeTypeNum,
-          grade: grade,
-          gradeUploadDate: gradeUploadDate, // Add gradeUploadDate field
-        });
+          course_ID: course_ID.replace(/"/g, ''),
+          semester_Year: semester_Year.replace(/"/g, ''),
+          semester_Num: semester_Num.replace(/"/g, ''),
+          gradeType: gradeType ? gradeType.replace(/"/g, '') : null,
+          gradeTypeNum: 1,
+          grade: grade.replace(/"/g, ''),
+          gradeUploadDate: new Date(),
+                });
       }
   
       setStudentInfo([]);
       setIsSubmitDisabled(true);
   
       alert('Grades added successfully!');
-      history.push('/TeacherCourseGrades');
+      history.push('/TeacherDashboard');
     } catch (error) {
       console.error('Error adding grades:', error);
     }
   };
+  
+  
   
 
   return (

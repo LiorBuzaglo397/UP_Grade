@@ -5,23 +5,21 @@ import Button from 'react-bootstrap/Button';
 import Navbar from './Navbar';
 
 const StudentGrades = () => {
-  //const { course_ID, semester_Year, semester_Num } = JSON.parse(localStorage.getItem('studentGradesParams'));
+  // const { course_ID, semester_Year, semester_Num } = JSON.parse(localStorage.getItem('studentGradesParams'));
+  
   const studentInfo = JSON.parse(localStorage.getItem('userInfo'));
   const selectedCourse = JSON.parse(localStorage.getItem('selectedCourse'));
 
-
   const [grades, setGrades] = useState([]);
-  const { course_ID, semester_Year, semester_Num ,course_Name } = useParams();
+  const { course_ID, semester_Year, semester_Num , course_Name } = useParams();
+  console.log(course_ID);
   const history = useHistory();
   const [filteredGrades, setFilteredGrades] = useState([]);
-  //setCourses
-  const [csourses, setCourses] = useState([]);
-
 
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/grade/getGradesByCourseIDForStudent?user_ID=${studentInfo.user_ID}&course_ID=${course_ID}&semester_Year=${semester_Year}&semester_Num=${semester_Num}`);
+        const response = await axios.get(`http://localhost:5001/api/grade/getGradesByCourseIDForStudent?user_ID=${studentInfo._id}&course_ID=${course_ID}&semester_Year=${semester_Year}&semester_Num=${semester_Num}`);
         console.log(response.data.grades);
         const gradesData = response.data.grades;
         setGrades(gradesData);
@@ -32,7 +30,7 @@ const StudentGrades = () => {
     };
   
     fetchGrades();
-  }, [course_ID, semester_Num, semester_Year, studentInfo.user_ID]);
+  }, [course_ID, semester_Num, semester_Year, studentInfo._id]);
 
   useEffect(() => {
     if (Array.isArray(grades)) {
@@ -73,7 +71,6 @@ const StudentGrades = () => {
     };
   };
   
-  
   const handleStatsClick = async (assignmentId, assignmentName) => {
     try {
       const response = await axios.get('http://localhost:5001/api/grade/getGradesByCourseID', {
@@ -105,54 +102,54 @@ const StudentGrades = () => {
     }
   };
 
-  // Function to calculate standard deviation
-  const calculateStandardDeviation = (gradesList) => {
-    const mean = gradesList.reduce((a, b) => a + b, 0) / gradesList.length;
-    const squaredDifferences = gradesList.map((grade) => (grade - mean) ** 2);
-    const variance = squaredDifferences.reduce((a, b) => a + b, 0) / squaredDifferences.length;
-    return Math.sqrt(variance);
+  // Function to format the gradeUploadDate as "dd/mm/yyyy"
+  const formatDate = (uploadDate) => {
+    const date = new Date(uploadDate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+
+    return `${day}/${month}/${year}`;
   };
 
-  
-  
   return (
     <div>
-    <Navbar />
-    <div className='table-wrapper'>
-      <br></br>
-      <h2>Grades for {course_Name}</h2>
-      {filteredGrades.map((grade) => (
-        <table key={grade.id} className='grade-table'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date of Submission</th>
-              <th>Type</th>
-              <th>Grade</th>
-              <th>Stats</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{grade.Assingment_Name}</td>
-              <td>{grade.gradeUploadDate}</td>
-              <td>{grade.gradeType}</td>
-              <td>{grade.grade}</td>
-              <td>
-                <Button onClick={() => handleStatsClick(grade.id,grade.Assingment_Name)} variant='primary'>
-                  View stats
-                </Button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      ))}
-      <br></br>
-      <button onClick={() => history.goBack()} className='back-button'>
-        Go Back
-      </button>
+      <Navbar />
+      <div className='table-wrapper'>
+        <br />
+        <h2>Grades for {course_Name}</h2>
+        {filteredGrades.map((grade) => (
+          <table key={grade.id} className='grade-table'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date of Submission</th>
+                <th>Type</th>
+                <th>Grade</th>
+                <th>Stats</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{grade.Assingment_Name}</td>
+                <td>{formatDate(grade.gradeUploadDate)}</td>
+                <td>{grade.gradeType}</td>
+                <td>{grade.grade}</td>
+                <td>
+                  <Button onClick={() => handleStatsClick(grade.id, grade.Assingment_Name)} variant='primary'>
+                    View stats
+                  </Button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        ))}
+        <br />
+        <button onClick={() => history.goBack()} className='back-button'>
+          Go Back
+        </button>
+      </div>
     </div>
-  </div>
   );
 };
 

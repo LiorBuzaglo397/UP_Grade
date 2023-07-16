@@ -4,9 +4,11 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store';
-import Navbar from './Navbar';
+import {Link} from 'react-router-dom';
+
 
 const Login = ({ handleLogin }) => {
+
   const dispatch = useDispatch();
   const history = useHistory();
   const [inputs, setInputs] = useState({
@@ -86,7 +88,12 @@ const Login = ({ handleLogin }) => {
               value={inputs.user_Password}
               onChange={handleChange}
             />
+
             <button type="submit">Login</button>
+                        <br/><br/>
+          <label className='label-link'>Do you want to Sign Up? 
+           <Link to="/signup"> Click here</Link>
+          </label>
           </form>
         </div>
       </div>
