@@ -19,7 +19,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/user/getAllCourses', {
+        const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/api/user/getAllCourses', {
           params: {
             _id: userInfo._id,
             semester_Year: year,
