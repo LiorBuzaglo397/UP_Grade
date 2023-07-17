@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import courseRouter from './routes/course-routes.js';
 import gradeRouter from './routes/grade-routes.js';
-import assignmentRouter from './routes/Assignment-routes.js';
+import assignmentRouter from './routes/assignment-routes.js';
 import cors from 'cors';
 
 const app = express();
