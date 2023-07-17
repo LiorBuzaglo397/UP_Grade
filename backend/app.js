@@ -10,7 +10,7 @@ import cors from 'cors';
 
 
 const app = express();
-app.use(cors());
+app.use(cors({origin: (process.env.CLIENT_URL || 'http://localhost:3000')}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -37,6 +37,6 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
+//app.use((0, cors_1.default)({origin: (process.env.CLIENT_URL || 'http://localhost:3000')}));
 
   //  .connect('mongodb+srv://LiorBuzaglo:Ll18061996@cluster1.ybcsdrv.mongodb.net/UP_Grade?retryWrites=true&w=majority', {
