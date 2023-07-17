@@ -35,9 +35,9 @@ const App = () => {
 
   const handleFormSubmit = () => {
     if (userInfo.user_Description === 'Student') {
-      history.push(`/StudentDashboard?semester=${semester}&year=${year}`);
+      history.push(`/studentdashboard?semester=${semester}&year=${year}`);
     } else if (userInfo.user_Description === 'Teacher') {
-      history.push(`/TeacherDashboard?semester=${semester}&year=${year}`);
+      history.push(`/teacherdashboard?semester=${semester}&year=${year}`);
     }
   };
 
@@ -102,10 +102,10 @@ const App = () => {
           <Route path="/teacher-grades/:course_ID/:semester_Year/:semester_Num/:course_Name">
             <TeacherCoursesAssignment />
           </Route>
-          <Route path="/StudentDashboard">
+          <Route path="/studentdashboard">
             <StudentDashboard />
           </Route>
-          <Route path="/TeacherDashboard">
+          <Route path="/teacherdashboard">
             <TeacherDashboard />
           </Route>
           <Route path="/stats">
