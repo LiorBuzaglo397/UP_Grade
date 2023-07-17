@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useLocation } from 'react-router-dom';
 
-const TeacherDashboard = () => {
+const TeacherDashboard = ({ semester, year }) => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
@@ -13,8 +13,8 @@ const TeacherDashboard = () => {
   const [newlyAddedRows, setNewlyAddedRows] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const semester = searchParams.get('semester');
-  const year = searchParams.get('year');
+ // const semester = searchParams.get('semester');
+ // const year = searchParams.get('year');
   console.log(semester);
 
   useEffect(() => {
