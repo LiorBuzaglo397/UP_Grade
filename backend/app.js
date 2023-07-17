@@ -1,11 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import router from './routes/user-routes.js';
+import router from './routes/user-routes.mjs';
 import cookieParser from 'cookie-parser';
 
-import courseRouter from './routes/course-routes.js';
-import gradeRouter from './routes/grade-routes.js';
-import assignmentRouter from './routes/Assignment-routes.js';
+import courseRouter from './routes/course-routes.mjs';
+import gradeRouter from './routes/grade-routes.mjs';
+import assignmentRouter from './routes/Assignment-routes.mjs';
 import cors from 'cors';
 
 const app = express();
@@ -29,7 +29,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(5001, () => {
+    app.listen(5000, () => {
       console.log('Connected to Database and listening on port 5001');
     });
   })
