@@ -9,6 +9,7 @@ import assignmentRouter from './routes/Assignment-routes.js'; // Update the file
 import cors from 'cors';
 
 require('dotenv').config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -37,3 +38,6 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+
+  //  .connect('mongodb+srv://LiorBuzaglo:Ll18061996@cluster1.ybcsdrv.mongodb.net/UP_Grade?retryWrites=true&w=majority', {
