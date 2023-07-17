@@ -8,7 +8,6 @@ import gradeRouter from './routes/grade-routes.js'; // Update the file extension
 import assignmentRouter from './routes/Assignment-routes.js'; // Update the file extension to .js
 import cors from 'cors';
 
-require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -31,7 +30,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(5000, () => {
+    app.listen(5001, () => {
       console.log('Connected to Database and listening on port 5001');
     });
   })
