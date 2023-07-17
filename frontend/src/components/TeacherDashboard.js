@@ -20,7 +20,7 @@ const TeacherDashboard = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/user/getAllCourses', {
+        const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/api/user/getAllCourses', {
           params: {
             _id: userInfo._id,
             semester_Year: year,

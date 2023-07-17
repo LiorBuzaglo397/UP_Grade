@@ -25,7 +25,7 @@ console.log(course_Name);
     const fetchAssignment = async () => {
       try {
         console.log(course_ID);
-        const response = await axios.get('http://localhost:5001/api/assignment/getAllAssignmentByCourseID', {
+        const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/api/assignment/getAllAssignmentByCourseID', {
           params: {
             course_ID: course_ID ,
           },
@@ -59,7 +59,7 @@ console.log(course_Name);
         };
       });
 
-      const response = await axios.post('http://localhost:5001/api/assignment/addOrUpdateAssignment', {
+      const response = await axios.post('https://upgradebyliorandnofar-api.onrender.com/api/assignment/addOrUpdateAssignment', {
         course_ID: course_ID,
         assignments: updatedAssignments.concat(newAssignments),
       });
@@ -94,7 +94,7 @@ console.log(course_Name);
 
   const addNewAssignment = async (newAssignment) => {
     try {
-      const response = await axios.post('http://localhost:5001/api/assignment/addAssignment', newAssignment);
+      const response = await axios.post('https://upgradebyliorandnofar-api.onrender.com/api/assignment/addAssignment', newAssignment);
       console.log('Assignment added:', response.data);
       setAssignments((prevAssignments) => [...prevAssignments, response.data.assignment]);
     } catch (error) {

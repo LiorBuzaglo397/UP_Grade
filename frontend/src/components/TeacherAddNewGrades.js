@@ -81,7 +81,7 @@ console.log(semester_Num);
           grade,
         } = student;
   
-        await axios.post('http://localhost:5001/api/grade/add', {
+        await axios.post('https://upgradebyliorandnofar-api.onrender.com/api/grade/add', {
           Assingment_Name : assignmentName,
           user_ID: studentId,
           course_ID: course_ID.replace(/"/g, ''),

@@ -20,7 +20,7 @@ const TeacherAddGradesWithFile = () => {
         const formData = new FormData();
         formData.append('file', selectedFile);
 
-        const response = await axios.post('http://localhost:5001/api/grade/addGradeWithFile', formData, {
+        const response = await axios.post('https://upgradebyliorandnofar-api.onrender.com/api/grade/addGradeWithFile', formData, {
           onUploadProgress: (progressEvent) => {
             const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
             setUploadProgress(progress);
