@@ -69,6 +69,7 @@ export const login = async(req , res , next) => {
             .status(400)
             .json({message : "Couldn't Find User By This Email"});
     }
+    console.log('email:', email);
     console.log('user_Password:', user_Password);
     console.log('existingUser.user_Password:', existingUser.user_Password);
 
