@@ -46,9 +46,13 @@ const App = () => {
 
   const renderUserForm = () => {
     if (userInfo.user_Description === "Student") {
-      window.location.href = `/student-dashboard?semester=${semester}&year=${year}`;
+      <StudentDashboard semester={semester} year={year} />
+
+      //window.location.href = `/student-dashboard?semester=${semester}&year=${year}`;
     } else if (userInfo.user_Description === "Teacher") {
-      window.location.href = `/teacher-dashboard?semester=${semester}&year=${year}`;
+      //window.location.href = `/teacher-dashboard?semester=${semester}&year=${year}`;
+      <TeacherDashboard semester={semester} year={year} />
+
     }
   
     return null;
