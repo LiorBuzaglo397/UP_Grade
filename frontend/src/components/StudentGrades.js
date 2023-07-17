@@ -73,7 +73,7 @@ const StudentGrades = () => {
   
   const handleStatsClick = async (assignmentId, assignmentName) => {
     try {
-      const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/api/grade/getGradesByCourseID', {
+      const response = await axios.get('http://localhost:5001/api/grade/getGradesByCourseID', {
         params: {
           Assingment_Name: assignmentName,
           course_ID,

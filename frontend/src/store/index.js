@@ -16,8 +16,7 @@ const userSlice = createSlice ({
 export const userActions = userSlice.actions; 
 
 export const store = configureStore({
-    reducer : userSlice.reducer,
-    devTools : false
+    reducer : userSlice.reducer
 });
 
 export const { login, logout } = userSlice.actions;

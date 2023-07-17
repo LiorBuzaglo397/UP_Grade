@@ -2,15 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import router from './routes/user-routes.js';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
 
 import courseRouter from './routes/course-routes.js';
 import gradeRouter from './routes/grade-routes.js';
 import assignmentRouter from './routes/Assignment-routes.js';
+import cors from 'cors';
 
 const app = express();
-
-app.use(cors({ origin: 'https://upgradebyliorandnofar.onrender.com' }));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 

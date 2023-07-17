@@ -37,7 +37,7 @@ console.log(semester_Num);
   useEffect(() => {
     const fetchStudentInfo = async () => {
       try {
-        const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/api/course/getUserByCourseInfo', {
+        const response = await axios.get('http://localhost:5001/api/course/getUserByCourseInfo', {
           params: {
             _id: courseId.replace(/"/g, ''), 
           },
@@ -81,7 +81,7 @@ console.log(semester_Num);
           grade,
         } = student;
   
-        await axios.post('https://upgradebyliorandnofar-api.onrender.com/api/grade/add', {
+        await axios.post('http://localhost:5001/api/grade/add', {
           Assingment_Name : assignmentName,
           user_ID: studentId,
           course_ID: course_ID.replace(/"/g, ''),

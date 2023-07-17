@@ -63,13 +63,11 @@ export const login = async(req , res , next) => {
     }catch(err){
         return console.log(err);
     }
-    console.log('existingUser.user_Password:', existingUser.user_Password);
     if(!existingUser){ //if the user is already singUp to the website
         return res
             .status(400)
             .json({message : "Couldn't Find User By This Email"});
     }
-    console.log('email:', email);
     console.log('user_Password:', user_Password);
     console.log('existingUser.user_Password:', existingUser.user_Password);
 
@@ -120,7 +118,7 @@ export const addCourseToUser = async (req, res, next) => {
 
   try {
     const user = await User.findById(_id);
-    console.log(_id);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

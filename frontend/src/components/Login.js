@@ -25,8 +25,7 @@ const Login = ({ handleLogin }) => {
 
   const sendRequest = async () => {
     try {
-      console.log(inputs.user_Password);
-      const res = await axios.post('https://upgradebyliorandnofar-api.onrender.com/api/user/login', {
+      const res = await axios.post('http://localhost:5001/api/user/login', {
         email: inputs.email,
         user_Password: inputs.user_Password,
       });

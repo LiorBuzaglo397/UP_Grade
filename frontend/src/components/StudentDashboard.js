@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useLocation } from 'react-router-dom';
 
-const StudentDashboard = ({ semester, year }) => {
+const StudentDashboard = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
@@ -13,13 +13,13 @@ const StudentDashboard = ({ semester, year }) => {
   const [newlyAddedRows, setNewlyAddedRows] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  //const semester = searchParams.get('semester');
- // const year = searchParams.get('year');
+  const semester = searchParams.get('semester');
+  const year = searchParams.get('year');
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('https://upgradebyliorandnofar-api.onrender.com/api/user/getAllCourses', {
+        const response = await axios.get('http://localhost:5001/api/user/getAllCourses', {
           params: {
             _id: userInfo._id,
             semester_Year: year,
