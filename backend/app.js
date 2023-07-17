@@ -1,16 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import router from './routes/user-routes.js'; // Update the file extension to .js
+import router from './routes/user-routes.js';
 import cookieParser from 'cookie-parser';
-
-import courseRouter from './routes/course-routes.js'; // Update the file extension to .js
-import gradeRouter from './routes/grade-routes.js'; // Update the file extension to .js
-import assignmentRouter from './routes/Assignment-routes.js'; // Update the file extension to .js
 import cors from 'cors';
 
+import courseRouter from './routes/course-routes.js';
+import gradeRouter from './routes/grade-routes.js';
+import assignmentRouter from './routes/Assignment-routes.js';
 
 const app = express();
-app.use(cors({origin: (process.env.CLIENT_URL || 'http://localhost:3000')}));
+
+app.use(cors({ origin: 'https://upgradebyliorandnofar.onrender.com' }));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -37,6 +37,3 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-//app.use((0, cors_1.default)({origin: (process.env.CLIENT_URL || 'http://localhost:3000')}));
-
-  //  .connect('mongodb+srv://LiorBuzaglo:Ll18061996@cluster1.ybcsdrv.mongodb.net/UP_Grade?retryWrites=true&w=majority', {
