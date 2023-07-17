@@ -119,7 +119,7 @@ const App = () => {
             <StudentDashboard />
           </Route>
           <Route path="/teacher-dashboard">
-          <TeacherDashboard semester={semester} year={year} />
+            <TeacherDashboard semester={semester} year={year} />
           </Route>
           <Route path="/stats">
             <StatsGrades />
