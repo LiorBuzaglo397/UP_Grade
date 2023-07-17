@@ -5,7 +5,7 @@ import StudentDashboard from './components/StudentDashboard';
 import TeacherDashboard from './components/TeacherDashboard';
 import Login from './components/Login';
 import StudentGrades from './components/StudentGrades';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory, Link } from 'react-router-dom';
 import Logo from './images/Logo.png';
 import TeacherAddGradesWithFile from './components/TeacherAddGradesWithFile';
 import TeacherAddNewGrades from './components/TeacherAddNewGrades';
@@ -35,9 +35,9 @@ const App = () => {
 
   const handleFormSubmit = () => {
     if (userInfo.user_Description === 'Student') {
-      window.location.href=`/studentdashboard/${semester}/${year}`;
+      history.push(`/studentdashboard/${semester}/${year}`);
     } else if (userInfo.user_Description === 'Teacher') {
-      window.location.href=`/teacherdashboard/${semester}/${year}`;
+      history.push(`/teacherdashboard/${semester}/${year}`);
     }
   };
 
