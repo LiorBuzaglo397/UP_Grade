@@ -35,7 +35,7 @@ const App = () => {
 
   const handleFormSubmit = () => {
     if (userInfo.user_Description === 'Student') {
-      window.location.href=`/studentdashboard?${semester}/${year}`;
+      window.location.href=`/studentdashboard/${semester}/${year}`;
     } else if (userInfo.user_Description === 'Teacher') {
       window.location.href=`/teacherdashboard/${semester}/${year}`;
     }
