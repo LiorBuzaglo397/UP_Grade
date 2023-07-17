@@ -1,13 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import router from './routes/user-routes.mjs';
+import router from './routes/user-routes.js'; // Update the file extension to .js
 import cookieParser from 'cookie-parser';
 
-import courseRouter from './routes/course-routes.mjs';
-import gradeRouter from './routes/grade-routes.mjs';
-import assignmentRouter from './routes/Assignment-routes.mjs';
+import courseRouter from './routes/course-routes.js'; // Update the file extension to .js
+import gradeRouter from './routes/grade-routes.js'; // Update the file extension to .js
+import assignmentRouter from './routes/Assignment-routes.js'; // Update the file extension to .js
 import cors from 'cors';
 
+require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
