@@ -63,6 +63,7 @@ export const login = async(req , res , next) => {
     }catch(err){
         return console.log(err);
     }
+    console.log('existingUser.user_Password:', existingUser.user_Password);
     if(!existingUser){ //if the user is already singUp to the website
         return res
             .status(400)
