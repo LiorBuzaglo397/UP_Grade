@@ -1,5 +1,5 @@
-import Assignment from "../model/Assignment";
-import Courses from "../model/Courses";
+import Assignment from "../model/Assignment.js";
+import Courses from "../model/Courses.js";
 
 export const addAssignment = async (req, res, next) => {
   const { course_ID, assignment_Name, upload_Date, type } = req.body;
