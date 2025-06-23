@@ -1,6 +1,6 @@
 import express from 'express'; 
 
-import {getAllAssignment , addAssignment , getAllAssignmentByCourseID ,addOrUpdateAssignment } from '../controllers/assignment-controller';
+import {getAllAssignment , addAssignment , getAllAssignmentByCourseID ,addOrUpdateAssignment } from '../controllers/assignment-controller.js';
 const assignmentRouter = express.Router();
 
 assignmentRouter.get("/" , getAllAssignment);
