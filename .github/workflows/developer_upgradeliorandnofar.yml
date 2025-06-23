@@ -43,11 +43,3 @@ jobs:
         with:
           name: node-app
 
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'UPGRADELiorAndNofar'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A77357E960E74B449FC21E9482C39630 }}
-          package: .
